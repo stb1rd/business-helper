@@ -1,4 +1,8 @@
 export type BoxCoords = [startCoordX: number, startCoordY: number, startCoordY: number, sizeX: number, sizeY: number, sizeZ: number];
+export type BoxItem = {
+  id: number;
+  coords: BoxCoords;
+};
 
 export const getPlotData = (boxProps: BoxCoords): { x: number[]; y: number[]; z: number[]; i: number[]; j: number[]; k: number[] } => {
   const faces = {

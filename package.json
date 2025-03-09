@@ -10,11 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.0.12",
     "@tanstack/react-query": "^5.67.1",
     "plotly.js": "^3.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-plotly.js": "^2.6.0"
+    "react-plotly.js": "^2.6.0",
+    "tailwindcss": "^4.0.12"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
@@ -22,6 +24,7 @@
     "@types/react-dom": "^19.0.4",
     "@types/react-plotly.js": "^2.6.3",
     "@vitejs/plugin-react": "^4.3.4",
+    "daisyui": "^5.0.0",
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
