@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Palette } from './Palette';
+import { Palette } from './Palette/Palette';
 
 export const IndexPage = () => {
   const { data } = useQuery({
