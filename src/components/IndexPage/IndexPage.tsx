@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
+import { Palette } from './Palette';
 
-export const Hello = () => {
+export const IndexPage = () => {
   const { data } = useQuery({
     queryKey: ['hello'],
     queryFn: async () => {
@@ -15,6 +16,8 @@ export const Hello = () => {
     <>
       <div>Hello</div>
       <p>api data: {data}</p>
+      <br />
+      <Palette />
     </>
   );
 };
