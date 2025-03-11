@@ -1,3 +1,5 @@
+import { ProductSchema } from './types';
+
 export type BoxCoords = [startCoordX: number, startCoordY: number, startCoordY: number, sizeX: number, sizeY: number, sizeZ: number];
 export type BoxItem = {
   id: number;
@@ -49,4 +51,27 @@ export const getPlotData = (boxProps: BoxCoords): { x: number[]; y: number[]; z:
     ...faces,
     ...vertices,
   };
+};
+
+export const getProductCoords = (product: ProductSchema): BoxCoords => [
+  product.x,
+  product.y,
+  product.z || Math.random() * 100,
+  product.product.widthMm,
+  product.product.lengthMm,
+  product.product.heightMm,
+];
+
+export const PALETTE_SIZE = {
+  x: 800,
+  y: 1200,
+  z: 144,
+};
+
+export const PLOT_DEFAULT_DATA = {
+  opacity: 0.5,
+  type: 'mesh3d',
+  color: 'limegreen',
+  flatshading: true,
+  lighting: { facenormalsepsilon: 0 },
 };

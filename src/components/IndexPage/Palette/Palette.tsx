@@ -1,29 +1,11 @@
 import Plot, { PlotParams } from 'react-plotly.js';
-import { BoxItem, getPlotData } from './helpers';
+import { getPlotData, getProductCoords, PALETTE_SIZE, PLOT_DEFAULT_DATA } from './helpers';
 import { useState } from 'react';
+import { ProductSchema } from './types';
 
-const PALETTE_SIZE = {
-  x: 800,
-  y: 1200,
-  z: 144,
-};
-
-const PLOT_DEFAULT_DATA = {
-  opacity: 0.5,
-  type: 'mesh3d',
-  color: 'limegreen',
-  flatshading: true,
-  lighting: { facenormalsepsilon: 0 },
-};
-
-const MOCKED_BOXES_COORDS: BoxItem[] = [
-  { id: 1, coords: [0, 0, 0, PALETTE_SIZE.x, PALETTE_SIZE.x, PALETTE_SIZE.x] },
-  { id: 2, coords: [0, PALETTE_SIZE.x, 0, 400, 400, 400] },
-  { id: 3, coords: [400, PALETTE_SIZE.x, 0, 200, 200, 200] },
-];
-
-export const Palette = () => {
-  const [visibleBoxesIds, setVisibleBoxesIds] = useState(MOCKED_BOXES_COORDS.map((x) => x.id));
+export const Palette = ({ products }: { products: ProductSchema[] }) => {
+  console.log('products', products);
+  const [visibleBoxesIds, setVisibleBoxesIds] = useState(products.map((x) => x.product.articleId));
 
   const palettePlotData = {
     ...PLOT_DEFAULT_DATA,
@@ -32,13 +14,15 @@ export const Palette = () => {
     name: 'Палета',
   } as PlotParams['data'][number];
 
-  const boxesPlotData = MOCKED_BOXES_COORDS.filter((x) => visibleBoxesIds.includes(x.id)).map((x) => ({
-    ...PLOT_DEFAULT_DATA,
-    ...getPlotData(x.coords),
-    name: `Коробка #${x.id}`,
-  })) as PlotParams['data'];
+  const boxesPlotData = products
+    .filter((x) => visibleBoxesIds.includes(x.product.articleId))
+    .map((productItem) => ({
+      ...PLOT_DEFAULT_DATA,
+      ...getPlotData(getProductCoords(productItem)),
+      name: productItem.product.articleId,
+    })) as PlotParams['data'];
 
-  const handleCheckboxClick = (targetId: number) => {
+  const handleCheckboxClick = (targetId: string) => {
     let newVisibleBoxesIds = [...visibleBoxesIds];
     if (visibleBoxesIds.includes(targetId)) {
       newVisibleBoxesIds = newVisibleBoxesIds.filter((x) => x !== targetId);
@@ -91,25 +75,29 @@ export const Palette = () => {
             </tr>
           </thead>
           <tbody>
-            {MOCKED_BOXES_COORDS.map((boxItem) => (
-              <tr key={boxItem.id}>
-                <th>
-                  <label>
-                    <input
-                      type="checkbox"
-                      className="checkbox checkbox-sm"
-                      checked={visibleBoxesIds.includes(boxItem.id)}
-                      onChange={() => handleCheckboxClick(boxItem.id)}
-                    />
-                  </label>
-                </th>
-                <td>{boxItem.id}</td>
-                <td>{boxItem.coords.slice(-3).join(' x ')}</td>
-                <td>
-                  X: {boxItem.coords[0]}, Y: {boxItem.coords[1]}, Z: {boxItem.coords[2]}
-                </td>
-              </tr>
-            ))}
+            {products.map((productItem) => {
+              const coords = getProductCoords(productItem);
+
+              return (
+                <tr key={productItem.product.articleId}>
+                  <th>
+                    <label>
+                      <input
+                        type="checkbox"
+                        className="checkbox checkbox-sm"
+                        checked={visibleBoxesIds.includes(productItem.product.articleId)}
+                        onChange={() => handleCheckboxClick(productItem.product.articleId)}
+                      />
+                    </label>
+                  </th>
+                  <td>{productItem.product.articleId}</td>
+                  <td>{coords.slice(-3).join(' x ')}</td>
+                  <td>
+                    X: {coords[0]}, Y: {coords[1]}, Z: {coords[2]}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
