@@ -56,7 +56,7 @@ export const getPlotData = (boxProps: BoxCoords): { x: number[]; y: number[]; z:
 export const getProductCoords = (product: ProductSchema): BoxCoords => [
   product.x,
   product.y,
-  product.z || Math.random() * 100,
+  product.z,
   product.product.widthMm,
   product.product.lengthMm,
   product.product.heightMm,

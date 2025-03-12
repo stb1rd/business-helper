@@ -2,6 +2,7 @@ export type ProductSchema = {
   x: number;
   y: number;
   z: number;
+  serialNumber: string;
   product: {
     articleId: string;
     widthMm: number;

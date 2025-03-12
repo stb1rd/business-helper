@@ -4,8 +4,7 @@ import { useState } from 'react';
 import { ProductSchema } from './types';
 
 export const Palette = ({ products }: { products: ProductSchema[] }) => {
-  console.log('products', products);
-  const [visibleBoxesIds, setVisibleBoxesIds] = useState(products.map((x) => x.product.articleId));
+  const [visibleBoxesIds, setVisibleBoxesIds] = useState(products.map((x) => x.serialNumber));
 
   const palettePlotData = {
     ...PLOT_DEFAULT_DATA,
@@ -15,11 +14,11 @@ export const Palette = ({ products }: { products: ProductSchema[] }) => {
   } as PlotParams['data'][number];
 
   const boxesPlotData = products
-    .filter((x) => visibleBoxesIds.includes(x.product.articleId))
+    .filter((x) => visibleBoxesIds.includes(x.serialNumber))
     .map((productItem) => ({
       ...PLOT_DEFAULT_DATA,
       ...getPlotData(getProductCoords(productItem)),
-      name: productItem.product.articleId,
+      name: `${productItem.serialNumber} ${productItem.product.articleId}`,
     })) as PlotParams['data'];
 
   const handleCheckboxClick = (targetId: string) => {
@@ -70,6 +69,7 @@ export const Palette = ({ products }: { products: ProductSchema[] }) => {
             <tr>
               <th></th>
               <th></th>
+              <th></th>
               <th>размер</th>
               <th>координаты</th>
             </tr>
@@ -79,17 +79,18 @@ export const Palette = ({ products }: { products: ProductSchema[] }) => {
               const coords = getProductCoords(productItem);
 
               return (
-                <tr key={productItem.product.articleId}>
+                <tr key={`${productItem.serialNumber}-${productItem.product.articleId}`}>
                   <th>
                     <label>
                       <input
                         type="checkbox"
                         className="checkbox checkbox-sm"
-                        checked={visibleBoxesIds.includes(productItem.product.articleId)}
-                        onChange={() => handleCheckboxClick(productItem.product.articleId)}
+                        checked={visibleBoxesIds.includes(productItem.serialNumber)}
+                        onChange={() => handleCheckboxClick(productItem.serialNumber)}
                       />
                     </label>
                   </th>
+                  <td>{productItem.serialNumber}</td>
                   <td>{productItem.product.articleId}</td>
                   <td>{coords.slice(-3).join(' x ')}</td>
                   <td>
