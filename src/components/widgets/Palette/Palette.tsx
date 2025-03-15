@@ -33,37 +33,39 @@ export const Palette = ({ products }: { products: ProductSchema[] }) => {
   };
 
   return (
-    <div className="flex gap-3">
-      <Plot
-        className="border border-indigo-600 w-[500px] h-[500px] box-content"
-        data={[palettePlotData, ...boxesPlotData]}
-        layout={{
-          autosize: true,
-          margin: { l: 0, r: 0, b: 0, t: 0 },
-          scene: {
-            aspectratio: { x: 0.4, y: 0.64, z: 1.2 },
-            xaxis: {
-              nticks: 8,
-              range: [0, PALETTE_SIZE.x],
-              title: { text: 'ширина (мм)' },
+    <div className="flex gap-3 w-full items-start">
+      <div className="sticky top-3">
+        <Plot
+          className="border border-[#d7d7d7] rounded-sm w-[500px] h-[500px] box-content shrink-0 overflow-hidden"
+          data={[palettePlotData, ...boxesPlotData]}
+          layout={{
+            autosize: true,
+            margin: { l: 0, r: 0, b: 0, t: 0 },
+            scene: {
+              aspectratio: { x: 0.4, y: 0.64, z: 1.2 },
+              xaxis: {
+                nticks: 8,
+                range: [0, PALETTE_SIZE.x],
+                title: { text: 'ширина (мм)' },
+              },
+              yaxis: {
+                nticks: 12,
+                range: [0, PALETTE_SIZE.y],
+                title: { text: 'длина (мм)' },
+              },
+              zaxis: {
+                nticks: 10,
+                range: [-PALETTE_SIZE.z, 2000],
+                title: { text: 'высота (мм)' },
+              },
+              camera: {
+                eye: { x: 1.5, y: 1.5, z: 0.1 },
+              },
             },
-            yaxis: {
-              nticks: 12,
-              range: [0, PALETTE_SIZE.y],
-              title: { text: 'длина (мм)' },
-            },
-            zaxis: {
-              nticks: 10,
-              range: [-PALETTE_SIZE.z, 2000],
-              title: { text: 'высота (мм)' },
-            },
-            camera: {
-              eye: { x: 1.5, y: 1.5, z: 0.1 },
-            },
-          },
-        }}
-      />
-      <div className="overflow-x-auto">
+          }}
+        />
+      </div>
+      <div className="overflow-x-auto grow">
         <table className="table">
           <thead>
             <tr>

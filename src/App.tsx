@@ -2,14 +2,18 @@ import './App.css';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { IndexPage } from './components/IndexPage/IndexPage';
+import { MockedPalettes } from '@/components/sections/MockedPalettes';
+import { ApiOrder } from '@/components/sections/ApiOrder/ApiOrder';
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <IndexPage />
+      <div className="flex flex-col items-center gap-6 w-full">
+        <MockedPalettes />
+        <ApiOrder />
+      </div>
     </QueryClientProvider>
   );
 }
