@@ -2,64 +2,95 @@ import { ChangeEventHandler, useState } from 'react';
 
 import { Chevron } from '../ui/Chevron';
 import { Palette } from '../widgets/Palette/Palette';
-import { ProductSchema } from '../widgets/Palette/types';
+import { OrderSchema } from '../widgets/Palette/types';
 
-const SAMPLE_PALETTE_PRODUCTS = `[
-  {
-    "serialNumber": 1,
-    "product": {
-      "articleId": "BOX-300x400",
-      "widthMm": 300,
-      "lengthMm": 400,
-      "heightMm": 320,
-      "weightKg": 10.0,
-      "maxLoadKg": 100.0
-    },
-    "layer": 1,
-    "x": 0,
-    "y": 0,
-    "z": 0,
-    "orientation": "HORIZONTAL"
-  },
-  {
-    "serialNumber": 2,
-    "product": {
-      "articleId": "BOX-300x400",
-      "widthMm": 300,
-      "lengthMm": 400,
-      "heightMm": 320,
-      "weightKg": 10.0,
-      "maxLoadKg": 100.0
-    },
-    "layer": 1,
-    "x": 300,
-    "y": 0,
-    "z": 0,
-    "orientation": "HORIZONTAL"
-  },
-  {
-    "serialNumber": 3,
-    "product": {
-      "articleId": "BOX-300x400",
-      "widthMm": 300,
-      "lengthMm": 400,
-      "heightMm": 320,
-      "weightKg": 10.0,
-      "maxLoadKg": 100.0
-    },
-    "layer": 1,
-    "x": 0,
-    "y": 0,
-    "z": 320,
-    "orientation": "HORIZONTAL"
-  }
-]`;
+const SAMPLE_PALETTE_PRODUCTS = `{
+  "orderId": "order-123",
+  "pallets": [
+    {
+      "palletId": "pallet-1",
+      "products": [
+        [
+          {
+            "serialNumber": 1,
+            "product": {
+              "articleId": "BOX-300x400",
+              "widthMm": 300,
+              "lengthMm": 400,
+              "heightMm": 320,
+              "weightKg": 10.0,
+              "maxLoadKg": 100.0
+            },
+            "layer": 1,
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "orientation": "HORIZONTAL"
+          },
+          {
+            "serialNumber": 2,
+            "product": {
+              "articleId": "BOX-300x400",
+              "widthMm": 300,
+              "lengthMm": 400,
+              "heightMm": 320,
+              "weightKg": 10.0,
+              "maxLoadKg": 100.0
+            },
+            "layer": 1,
+            "x": 300,
+            "y": 0,
+            "z": 0,
+            "orientation": "HORIZONTAL"
+          },
+          {
+            "serialNumber": 3,
+            "product": {
+              "articleId": "BOX-300x400",
+              "widthMm": 300,
+              "lengthMm": 400,
+              "heightMm": 320,
+              "weightKg": 10.0,
+              "maxLoadKg": 100.0
+            },
+            "layer": 1,
+            "x": 0,
+            "y": 0,
+            "z": 320,
+            "orientation": "HORIZONTAL"
+          }
+        ]
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "operatorId": "operator-1",
+      "points": [
+        {
+          "zone": {
+            "zoneId": "zone-A1",
+            "x": 0,
+            "y": 0
+          },
+          "pathMeters": 10,
+          "items": [
+            {
+              "articleId": "ART-123",
+              "quantity": 5
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}`;
 
 export const MockedPalettes = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const [mockValue, setMockValue] = useState(SAMPLE_PALETTE_PRODUCTS);
-  const [parsedMock, setParsedMock] = useState<ProductSchema[]>(JSON.parse(SAMPLE_PALETTE_PRODUCTS));
+  const [parsedMock, setParsedMock] = useState<OrderSchema>(JSON.parse(SAMPLE_PALETTE_PRODUCTS));
   const [parseError, setParseError] = useState('');
 
   const handleTextareaChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
@@ -97,7 +128,7 @@ export const MockedPalettes = () => {
               <span>{parseError}</span>
             </div>
           )}
-          <Palette products={parsedMock} />
+          <Palette products={parsedMock.pallets[0].products.flat()} />
         </div>
       )}
     </div>
