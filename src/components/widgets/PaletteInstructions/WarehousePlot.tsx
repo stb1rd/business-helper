@@ -1,6 +1,6 @@
 import Plot, { PlotParams } from 'react-plotly.js';
 
-import { PLOT_DEFAULT_DATA, getPlotData, BoxCoords } from '@/components/widgets/Palette/helpers';
+import { PLOT_DEFAULT_DATA, getPlotData, BoxCoords } from '@/components/widgets/PaletteInstructions/helpers';
 
 const warehouseSize = {
   x: 360 * 4 + 120 * 7,
@@ -74,7 +74,7 @@ RACKS_PLOT_DATA_LETTERS.forEach((rackSetLetter, i) => {
 
 const getRackCoords = (rack: RackSchema): BoxCoords => [rack.x, rack.y, rack.z, rack.sizeX, rack.sizeY, rack.sizeZ];
 
-export const WarehousePlot = ({ activeZonesIds }: { activeZonesIds?: string[] }) => {
+export const WarehousePlot = ({ activeZonesIds, isDetailed = true }: { activeZonesIds?: string[]; isDetailed?: boolean }) => {
   const racksPlotData = RACKS_PLOT_DATA.map((rackItem) => ({
     ...PLOT_DEFAULT_DATA,
     ...getPlotData(getRackCoords(rackItem)),
@@ -82,10 +82,12 @@ export const WarehousePlot = ({ activeZonesIds }: { activeZonesIds?: string[] })
     color: activeZonesIds?.includes(rackItem.title) ? 'limegreen' : 'slateblue',
   })) as PlotParams['data'];
 
+  const sizeProps = isDetailed ? 'w-[500px] h-[600px]' : 'w-[350px] h-[350px]';
+
   return (
     <div className="flex flex-col gap-2">
       <Plot
-        className="border border-[#d7d7d7] rounded-sm w-full h-[600px] box-content shrink-0 overflow-hidden"
+        className={`border border-[#d7d7d7] rounded-sm  box-content shrink-0 overflow-hidden ${sizeProps}`}
         data={racksPlotData}
         layout={{
           autosize: true,
@@ -96,18 +98,21 @@ export const WarehousePlot = ({ activeZonesIds }: { activeZonesIds?: string[] })
               range: [0, warehouseSize.x],
               tickvals: Array.from(whXTicks).map((tick) => tick[0]),
               ticktext: Array.from(whXTicks).map((tick) => tick[1]),
+              visible: isDetailed,
             },
             yaxis: {
               range: [0, warehouseSize.y],
               tickvals: Array.from(whYTicks).map((tick) => tick[0]),
               ticktext: Array.from(whYTicks).map((tick) => tick[1]),
+              visible: isDetailed,
             },
             zaxis: {
               range: [0, warehouseSize.z],
               nticks: 1,
+              visible: isDetailed,
             },
             camera: {
-              eye: { x: 0, y: -0.05, z: 0.85 },
+              eye: { x: 0, y: -0.05, z: isDetailed ? 0.85 : 0.55 },
               center: { x: 0, y: 0, z: 0 },
             },
           },

@@ -1,6 +1,6 @@
-export const Chevron = ({ isOpen }: { isOpen: boolean }) => {
+export const Chevron = ({ isOpen, size = 'btn-m' }: { isOpen: boolean; size?: 'btn-sm' | 'btn-m' }) => {
   return (
-    <button className="btn btn-ghost btn-square">
+    <button className={`btn btn-ghost btn-square ${size}`}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

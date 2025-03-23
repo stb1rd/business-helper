@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 
 import { Chevron } from '@/components/ui/Chevron';
-import { OrderSchema } from '@/components/widgets/Palette/types';
-import { PalettePaper } from '@/components/sections/ApiOrder/PalettePaper';
+import { OrderSchema } from '@/components/widgets/PaletteInstructions/types';
+import { PalettePaper } from '@/components/ui/PalettePaper';
 
 const INIT_BODY_VALUE = `{
   "orderId": "order-123",
@@ -47,8 +47,13 @@ export const ApiOrder = () => {
           </>
         )}
       </div>
-      {order?.pallets.map((palette) => (
-        <PalettePaper key={palette.palletId} id={palette.palletId} products={palette.products.flat().filter(Boolean)} />
+      {order?.pallets.map((palette, i) => (
+        <PalettePaper
+          key={palette.palletId}
+          id={palette.palletId}
+          products={palette.products.flat().filter(Boolean)}
+          route={order.routes[i]}
+        />
       ))}
     </>
   );

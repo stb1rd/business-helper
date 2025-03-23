@@ -16,6 +16,27 @@ export type PaletteSchema = {
   products: ProductSchema[][];
 };
 
+type RouteProductItem = {
+  articleId: string;
+  quantity: number;
+};
+
+type RoutePoint = {
+  zone: {
+    zoneId: string;
+    x: number;
+    y: number;
+  };
+  pathMeters: number;
+  items: RouteProductItem[];
+};
+
+export type RouteSchema = {
+  operatorId: string;
+  points: RoutePoint[];
+};
+
 export type OrderSchema = {
   pallets: PaletteSchema[];
+  routes: RouteSchema[];
 };
