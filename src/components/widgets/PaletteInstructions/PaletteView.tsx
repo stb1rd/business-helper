@@ -6,7 +6,7 @@ import { PalettePlot } from '@/components/widgets/PaletteInstructions/PalettePlo
 import { getProductCoords } from '@/components/widgets/PaletteInstructions/helpers';
 
 export const PaletteView = ({ products }: { products: ProductSchema[]; route?: RouteSchema }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const [visibleBoxesIds, setVisibleBoxesIds] = useState(products.map((x) => x.serialNumber));
   const visibleProducts = products.filter((x) => visibleBoxesIds.includes(x.serialNumber));
