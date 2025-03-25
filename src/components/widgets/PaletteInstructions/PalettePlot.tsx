@@ -1,7 +1,11 @@
+import { useState } from 'react';
+
 import Plot, { PlotParams } from 'react-plotly.js';
 
 import { PLOT_DEFAULT_DATA, getPlotData, PALETTE_SIZE, getProductCoords } from '@/components/widgets/PaletteInstructions/helpers';
 import { ProductSchema } from '@/components/widgets/PaletteInstructions/types';
+import { getColor } from '@/components/utils/getColor';
+import { Camera } from 'plotly.js';
 
 const palettePlotData = {
   ...PLOT_DEFAULT_DATA,
@@ -15,12 +19,34 @@ export const PalettePlot = ({ products, isDetailed = true }: { products: Product
     ...PLOT_DEFAULT_DATA,
     ...getPlotData(getProductCoords(productItem)),
     name: `${productItem.serialNumber} ${productItem.product.articleId}`,
+    color: getColor(Number(productItem.serialNumber)),
   })) as PlotParams['data'];
 
   const sizeProps = isDetailed ? 'w-[500px] h-[500px]' : 'w-[350px] h-[350px]';
 
+  const [cameraEyeX, setCameraEyeX] = useState(1.35);
+  const [cameraEyeY, setCameraEyeY] = useState(1.35);
+  const [cameraEyeZ, setCameraEyeZ] = useState(0.1);
+
   return (
     <Plot
+      onRelayout={(e) => {
+        // @ts-expect-error y tho
+        const { eye } = e['scene.camera'] as Camera;
+        const newCameraEyeX = eye?.x;
+        const newCameraEyeY = eye?.y;
+        const newCameraEyeZ = eye?.z;
+
+        if (newCameraEyeX) {
+          setCameraEyeX(newCameraEyeX);
+        }
+        if (newCameraEyeY) {
+          setCameraEyeY(newCameraEyeY);
+        }
+        if (newCameraEyeZ) {
+          setCameraEyeZ(newCameraEyeZ);
+        }
+      }}
       className={`border border-[#d7d7d7] rounded-sm box-content shrink-0 overflow-hidden ${sizeProps}`}
       data={[palettePlotData, ...boxesPlotData]}
       layout={{
@@ -42,12 +68,12 @@ export const PalettePlot = ({ products, isDetailed = true }: { products: Product
           },
           zaxis: {
             nticks: 10,
-            range: [-PALETTE_SIZE.z, 2000],
+            range: [-PALETTE_SIZE.z, 2400],
             title: { text: 'высота (мм)' },
             visible: isDetailed,
           },
           camera: {
-            eye: { x: 1.35, y: 1.35, z: 0.1 },
+            eye: { x: cameraEyeX, y: cameraEyeY, z: cameraEyeZ },
           },
         },
       }}

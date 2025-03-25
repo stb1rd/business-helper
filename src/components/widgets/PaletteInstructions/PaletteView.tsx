@@ -39,7 +39,7 @@ export const PaletteView = ({ products }: { products: ProductSchema[]; route?: R
                 <tr>
                   <th></th>
                   <th></th>
-                  <th></th>
+                  <th className="text-center">артикул</th>
                   <th>размер</th>
                   <th>координаты</th>
                 </tr>
@@ -61,7 +61,7 @@ export const PaletteView = ({ products }: { products: ProductSchema[]; route?: R
                         </label>
                       </th>
                       <td>{productItem.serialNumber}</td>
-                      <td>{productItem.product.articleId}</td>
+                      <td className="text-center">{productItem.product.articleId}</td>
                       <td>{coords.slice(-3).join(' x ')}</td>
                       <td>
                         X: {coords[0]}, Y: {coords[1]}, Z: {coords[2]}

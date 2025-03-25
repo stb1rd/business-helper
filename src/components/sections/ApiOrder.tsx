@@ -16,7 +16,12 @@ export const ApiOrder = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const [bodyValue, setBodyValue] = useState(INIT_BODY_VALUE);
-  const { mutate, data: order } = useMutation({
+  const {
+    mutate,
+    data: order,
+    isPending,
+    error,
+  } = useMutation({
     mutationFn: async (): Promise<OrderSchema> => {
       const response = await fetch('https://vaambival-want-back-1c8f.twc1.net/rest/order', {
         method: 'POST',
@@ -26,6 +31,10 @@ export const ApiOrder = () => {
 
       const result = await response.json();
       return result;
+    },
+    onError: () => {
+      // @ts-expect-error y tho
+      document?.getElementById('error_modal')?.showModal();
     },
   });
 
@@ -40,8 +49,8 @@ export const ApiOrder = () => {
           <>
             <div className="w-full flex gap-2 items-end">
               <textarea className="textarea w-full h-84" value={bodyValue} onChange={(e) => setBodyValue(e.target.value)} />
-              <button className="btn btn-primary btn-lg" onClick={() => mutate()}>
-                Создать заказ
+              <button className="btn btn-primary btn-lg w-xs" onClick={() => mutate()}>
+                {isPending ? <span className="loading loading-spinner" /> : 'Создать заказ'}
               </button>
             </div>
           </>
@@ -55,6 +64,24 @@ export const ApiOrder = () => {
           route={order.routes[i]}
         />
       ))}
+      <dialog id="error_modal" className="modal">
+        <div className="modal-box">
+          <div role="alert" className="alert alert-error">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>{error?.message}</span>
+          </div>
+          <form method="dialog" className="modal-backdrop">
+            <button className="btn btn-sm btn-circle absolute right-2 top-2">✕</button>
+          </form>
+        </div>
+      </dialog>
     </>
   );
 };

@@ -8,20 +8,20 @@ const SAMPLE_PALETTE_PRODUCTS = `{
   "orderId": "order-123",
   "pallets": [
     {
-      "palletId": "pallet-1",
+      "palletId": "testPallet",
       "products": [
         [
           {
             "serialNumber": 1,
             "product": {
-              "articleId": "BOX-300x400",
-              "widthMm": 300,
-              "lengthMm": 400,
-              "heightMm": 320,
-              "weightKg": 10.0,
-              "maxLoadKg": 100.0
+              "articleId": "6",
+              "widthMm": 684,
+              "lengthMm": 770,
+              "heightMm": 631,
+              "weightKg": 4000.0,
+              "maxLoadKg": 50.0
             },
-            "layer": 1,
+            "layer": 0,
             "x": 0,
             "y": 0,
             "z": 0,
@@ -30,73 +30,142 @@ const SAMPLE_PALETTE_PRODUCTS = `{
           {
             "serialNumber": 2,
             "product": {
-              "articleId": "BOX-300x400",
-              "widthMm": 300,
-              "lengthMm": 400,
-              "heightMm": 320,
-              "weightKg": 10.0,
-              "maxLoadKg": 100.0
+              "articleId": "1",
+              "widthMm": 499,
+              "lengthMm": 314,
+              "heightMm": 749,
+              "weightKg": 4000.0,
+              "maxLoadKg": 50.0
             },
-            "layer": 1,
-            "x": 300,
-            "y": 0,
+            "layer": 0,
+            "x": 0,
+            "y": 770,
             "z": 0,
-            "orientation": "HORIZONTAL"
+            "orientation": "VERTICAL"
           },
           {
             "serialNumber": 3,
             "product": {
-              "articleId": "BOX-300x400",
-              "widthMm": 300,
-              "lengthMm": 400,
-              "heightMm": 320,
-              "weightKg": 10.0,
-              "maxLoadKg": 100.0
+              "articleId": "2",
+              "widthMm": 301,
+              "lengthMm": 420,
+              "heightMm": 731,
+              "weightKg": 4000.0,
+              "maxLoadKg": 50.0
             },
-            "layer": 1,
-            "x": 0,
-            "y": 0,
-            "z": 320,
+            "layer": 0,
+            "x": 499,
+            "y": 770,
+            "z": 0,
             "orientation": "HORIZONTAL"
           }
-        ]
-      ]
-    },
-    {
-      "palletId": "pallet-2",
-      "products": [
+        ],
         [
           {
             "serialNumber": 4,
             "product": {
-              "articleId": "BOX-300x400",
-              "widthMm": 300,
-              "lengthMm": 400,
-              "heightMm": 320,
-              "weightKg": 10.0,
-              "maxLoadKg": 100.0
+              "articleId": "6",
+              "widthMm": 684,
+              "lengthMm": 770,
+              "heightMm": 631,
+              "weightKg": 4000.0,
+              "maxLoadKg": 50.0
             },
             "layer": 1,
             "x": 0,
             "y": 0,
-            "z": 0,
+            "z": 631,
             "orientation": "HORIZONTAL"
-          },
+          }
+        ],
+        [
           {
             "serialNumber": 5,
             "product": {
-              "articleId": "BOX-100x200",
-              "widthMm": 100,
-              "lengthMm": 200,
-              "heightMm": 320,
-              "weightKg": 10.0,
-              "maxLoadKg": 100.0
+              "articleId": "2",
+              "widthMm": 301,
+              "lengthMm": 420,
+              "heightMm": 731,
+              "weightKg": 4000.0,
+              "maxLoadKg": 50.0
             },
-            "layer": 1,
-            "x": 300,
-            "y": 0,
-            "z": 0,
+            "layer": 2,
+            "x": 499,
+            "y": 770,
+            "z": 731,
             "orientation": "HORIZONTAL"
+          }
+        ],
+        [
+          {
+            "serialNumber": 6,
+            "product": {
+              "articleId": "1",
+              "widthMm": 499,
+              "lengthMm": 314,
+              "heightMm": 749,
+              "weightKg": 4000.0,
+              "maxLoadKg": 50.0
+            },
+            "layer": 3,
+            "x": 0,
+            "y": 770,
+            "z": 749,
+            "orientation": "VERTICAL"
+          }
+        ],
+        [
+          {
+            "serialNumber": 7,
+            "product": {
+              "articleId": "6",
+              "widthMm": 684,
+              "lengthMm": 770,
+              "heightMm": 631,
+              "weightKg": 4000.0,
+              "maxLoadKg": 50.0
+            },
+            "layer": 4,
+            "x": 0,
+            "y": 0,
+            "z": 1262,
+            "orientation": "HORIZONTAL"
+          }
+        ],
+        [
+          {
+            "serialNumber": 8,
+            "product": {
+              "articleId": "2",
+              "widthMm": 301,
+              "lengthMm": 420,
+              "heightMm": 731,
+              "weightKg": 4000.0,
+              "maxLoadKg": 50.0
+            },
+            "layer": 5,
+            "x": 499,
+            "y": 770,
+            "z": 1462,
+            "orientation": "HORIZONTAL"
+          }
+        ],
+        [
+          {
+            "serialNumber": 9,
+            "product": {
+              "articleId": "1",
+              "widthMm": 499,
+              "lengthMm": 314,
+              "heightMm": 749,
+              "weightKg": 4000.0,
+              "maxLoadKg": 50.0
+            },
+            "layer": 6,
+            "x": 0,
+            "y": 770,
+            "z": 1498,
+            "orientation": "VERTICAL"
           }
         ]
       ]
