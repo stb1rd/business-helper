@@ -8,6 +8,8 @@ export type ProductSchema = {
     widthMm: number;
     lengthMm: number;
     heightMm: number;
+    weightKg: number;
+    maxLoadKg: number;
   };
 };
 

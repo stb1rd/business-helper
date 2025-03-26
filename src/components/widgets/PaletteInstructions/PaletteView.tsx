@@ -40,8 +40,10 @@ export const PaletteView = ({ products }: { products: ProductSchema[]; route?: R
                   <th></th>
                   <th></th>
                   <th className="text-center">артикул</th>
-                  <th>размер</th>
-                  <th>координаты</th>
+                  <th className="text-right">размер</th>
+                  <th className="text-right">вес</th>
+                  <th className="text-right whitespace-pre">{'лимит\nвеса\nсверху'}</th>
+                  <th className="text-right">координаты</th>
                 </tr>
               </thead>
               <tbody>
@@ -62,8 +64,10 @@ export const PaletteView = ({ products }: { products: ProductSchema[]; route?: R
                       </th>
                       <td>{productItem.serialNumber}</td>
                       <td className="text-center">{productItem.product.articleId}</td>
-                      <td>{coords.slice(-3).join(' x ')}</td>
-                      <td>
+                      <td className="text-right">{coords.slice(-3).join(' x ')}</td>
+                      <td className="text-right">{productItem.product.weightKg}</td>
+                      <td className="text-right">{productItem.product.maxLoadKg}</td>
+                      <td className="text-right">
                         X: {coords[0]}, Y: {coords[1]}, Z: {coords[2]}
                       </td>
                     </tr>
