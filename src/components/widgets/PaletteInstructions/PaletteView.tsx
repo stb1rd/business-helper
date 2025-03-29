@@ -4,6 +4,9 @@ import { ProductSchema, RouteSchema } from '@/components/widgets/PaletteInstruct
 import { Chevron } from '@/components/ui/Chevron';
 import { PalettePlot } from '@/components/widgets/PaletteInstructions/PalettePlot';
 import { getProductCoords } from '@/components/widgets/PaletteInstructions/helpers';
+import { getColor } from '@/components/utils/getColor';
+import { EyeIcon } from '@/components/ui/icons/EyeIcon';
+import { EyeSlashIcon } from '@/components/ui/icons/EyeSlashIcon';
 
 export const PaletteView = ({ products }: { products: ProductSchema[]; route?: RouteSchema }) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -11,7 +14,7 @@ export const PaletteView = ({ products }: { products: ProductSchema[]; route?: R
   const [visibleBoxesIds, setVisibleBoxesIds] = useState(products.map((x) => x.serialNumber));
   const visibleProducts = products.filter((x) => visibleBoxesIds.includes(x.serialNumber));
 
-  const handleCheckboxClick = (targetId: string) => {
+  const toggleVisibility = (targetId: string) => {
     let newVisibleBoxesIds = [...visibleBoxesIds];
     if (visibleBoxesIds.includes(targetId)) {
       newVisibleBoxesIds = newVisibleBoxesIds.filter((x) => x !== targetId);
@@ -20,6 +23,14 @@ export const PaletteView = ({ products }: { products: ProductSchema[]; route?: R
     }
 
     setVisibleBoxesIds(newVisibleBoxesIds);
+  };
+
+  const toggleAllVisible = () => {
+    if (visibleBoxesIds.length === 0) {
+      setVisibleBoxesIds(products.map((x) => x.serialNumber));
+    } else {
+      setVisibleBoxesIds([]);
+    }
   };
 
   return (
@@ -37,13 +48,18 @@ export const PaletteView = ({ products }: { products: ProductSchema[]; route?: R
             <table className="table">
               <thead>
                 <tr>
+                  <th className="align-bottom">
+                    <button className="btn btn-xs btn-circle btn-ghost" onClick={() => toggleAllVisible()}>
+                      {visibleBoxesIds.length !== 0 && <EyeIcon className="size-4" />}
+                      {visibleBoxesIds.length === 0 && <EyeSlashIcon className="size-4" />}
+                    </button>
+                  </th>
                   <th></th>
-                  <th></th>
-                  <th className="text-center">артикул</th>
-                  <th className="text-right">размер</th>
-                  <th className="text-right">вес</th>
-                  <th className="text-right whitespace-pre">{'лимит\nвеса\nсверху'}</th>
-                  <th className="text-right">координаты</th>
+                  <th className="align-bottom text-center">артикул</th>
+                  <th className="align-bottom text-right">размер</th>
+                  <th className="align-bottom text-right">вес</th>
+                  <th className="align-bottom text-right whitespace-pre">{'лимит\nвеса\nсверху'}</th>
+                  <th className="align-bottom text-right">координаты</th>
                 </tr>
               </thead>
               <tbody>
@@ -53,16 +69,22 @@ export const PaletteView = ({ products }: { products: ProductSchema[]; route?: R
                   return (
                     <tr key={`${productItem.serialNumber}-${productItem.product.articleId}`}>
                       <th>
-                        <label>
+                        {/* <label>
                           <input
                             type="checkbox"
                             className="checkbox checkbox-sm"
                             checked={visibleBoxesIds.includes(productItem.serialNumber)}
                             onChange={() => handleCheckboxClick(productItem.serialNumber)}
                           />
-                        </label>
+                        </label> */}
+                        <button className="btn btn-xs btn-circle btn-ghost" onClick={() => toggleVisibility(productItem.serialNumber)}>
+                          {visibleBoxesIds.includes(productItem.serialNumber) && <EyeIcon className="size-4" />}
+                          {!visibleBoxesIds.includes(productItem.serialNumber) && <EyeSlashIcon className="size-4" />}
+                        </button>
                       </th>
-                      <td>{productItem.serialNumber}</td>
+                      <td style={{ textShadow: 'white 0px 0px 5px', background: getColor(Number(productItem.serialNumber)) }}>
+                        {productItem.serialNumber}
+                      </td>
                       <td className="text-center">{productItem.product.articleId}</td>
                       <td className="text-right">{coords.slice(-3).join(' x ')}</td>
                       <td className="text-right">{productItem.product.weightKg}</td>

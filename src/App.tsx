@@ -2,7 +2,7 @@ import './App.css';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { MockedPalettes } from '@/components/sections/MockedPalettes';
+import { MockedPalettes } from '@/components/sections/MockedOrder';
 import { ApiOrder } from '@/components/sections/ApiOrder';
 
 const queryClient = new QueryClient();

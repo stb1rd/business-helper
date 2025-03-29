@@ -74,4 +74,5 @@ export const PLOT_DEFAULT_DATA = {
   color: 'limegreen',
   flatshading: true,
   lighting: { facenormalsepsilon: 0 },
+  name: '',
 };

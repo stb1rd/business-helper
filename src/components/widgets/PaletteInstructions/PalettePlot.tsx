@@ -11,14 +11,16 @@ const palettePlotData = {
   ...PLOT_DEFAULT_DATA,
   ...getPlotData([0, 0, 0, PALETTE_SIZE.x, PALETTE_SIZE.y, -PALETTE_SIZE.z]),
   color: 'khaki',
-  name: 'Палета',
+  text: 'Палета',
 } as PlotParams['data'][number];
 
 export const PalettePlot = ({ products, isDetailed = true }: { products: ProductSchema[]; isDetailed?: boolean }) => {
   const boxesPlotData = products.map((productItem) => ({
     ...PLOT_DEFAULT_DATA,
     ...getPlotData(getProductCoords(productItem)),
-    name: `${productItem.serialNumber} ${productItem.product.articleId}`,
+    text: [`номер: ${productItem.serialNumber}`, `артикул: ${productItem.product.articleId}`, `вес: ${productItem.product.weightKg}`].join(
+      '<br>'
+    ),
     color: getColor(Number(productItem.serialNumber)),
   })) as PlotParams['data'];
 
@@ -32,7 +34,7 @@ export const PalettePlot = ({ products, isDetailed = true }: { products: Product
     <Plot
       onRelayout={(e) => {
         // @ts-expect-error y tho
-        const { eye } = e['scene.camera'] as Camera;
+        const { eye } = (e['scene.camera'] as Camera) || {};
         const newCameraEyeX = eye?.x;
         const newCameraEyeY = eye?.y;
         const newCameraEyeZ = eye?.z;

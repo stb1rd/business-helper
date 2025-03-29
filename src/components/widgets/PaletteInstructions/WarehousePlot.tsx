@@ -78,7 +78,7 @@ export const WarehousePlot = ({ activeZonesIds, isDetailed = true }: { activeZon
   const racksPlotData = RACKS_PLOT_DATA.map((rackItem) => ({
     ...PLOT_DEFAULT_DATA,
     ...getPlotData(getRackCoords(rackItem)),
-    name: rackItem.title,
+    text: rackItem.title,
     color: activeZonesIds?.includes(rackItem.title) ? 'limegreen' : 'slateblue',
   })) as PlotParams['data'];
 
