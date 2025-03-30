@@ -163,6 +163,29 @@
           }
         ]
       ]
+    },
+    {
+      "palletId": "testPallet-2",
+      "products": [
+        [
+          {
+            "serialNumber": 1,
+            "product": {
+              "articleId": "6",
+              "widthMm": 684,
+              "lengthMm": 770,
+              "heightMm": 631,
+              "weightKg": 4000.0,
+              "maxLoadKg": 50.0
+            },
+            "layer": 0,
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "orientation": "HORIZONTAL"
+          }
+        ]
+      ]
     }
   ],
   "routes": [

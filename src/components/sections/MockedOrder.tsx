@@ -13,6 +13,8 @@ export const MockedPalettes = () => {
   const [parsedMock, setParsedMock] = useState(SAMPLE_PALETTE_PRODUCTS as unknown as OrderSchema);
   const [parseError, setParseError] = useState('');
 
+  const [visiblePaletteId, setVisiblePaletteId] = useState<string>();
+
   const handleTextareaChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     const newValue = e.target.value;
     setMockValue(newValue);
@@ -59,6 +61,8 @@ export const MockedPalettes = () => {
             id={palette.palletId}
             products={palette.products.flat().filter(Boolean)}
             route={parsedMock.routes[i]}
+            isOpen={visiblePaletteId === palette.palletId}
+            handleOpen={() => setVisiblePaletteId(palette.palletId)}
           />
         ))}
     </>

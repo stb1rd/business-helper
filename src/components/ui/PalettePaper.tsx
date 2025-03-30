@@ -4,9 +4,19 @@ import { Chevron } from '@/components/ui/Chevron';
 import { PaletteInstructions } from '@/components/widgets/PaletteInstructions/PaletteInstructions';
 import { ProductSchema, RouteSchema } from '@/components/widgets/PaletteInstructions/types';
 
-export const PalettePaper = ({ products, id, route }: { products: ProductSchema[]; id: string; route: RouteSchema }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
+export const PalettePaper = ({
+  products,
+  id,
+  route,
+  isOpen,
+  handleOpen,
+}: {
+  products: ProductSchema[];
+  id: string;
+  route: RouteSchema;
+  isOpen: boolean;
+  handleOpen: () => void;
+}) => {
   const [completedSerialIds, setCompletedSerialIds] = useState(new Set<string>());
   const toggleCompletedSerialId = (targetSerialId: string) => {
     if (completedSerialIds.has(targetSerialId)) {
@@ -24,10 +34,7 @@ export const PalettePaper = ({ products, id, route }: { products: ProductSchema[
 
   return (
     <div className="paper">
-      <div
-        className="flex gap-2 justify-start items-center interactive sticky top-0 bg-white z-20 w-full"
-        onClick={() => setIsOpen(!isOpen)}
-      >
+      <div className="flex gap-2 justify-start items-center interactive sticky top-0 bg-white z-20 w-full" onClick={handleOpen}>
         <h2 className="text-2xl">{title}</h2>
         <Chevron isOpen={isOpen} />
       </div>

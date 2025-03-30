@@ -14,6 +14,7 @@ const INIT_BODY_VALUE = `{
 
 export const ApiOrder = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [visiblePaletteId, setVisiblePaletteId] = useState<string>();
 
   const [bodyValue, setBodyValue] = useState(INIT_BODY_VALUE);
   const {
@@ -62,6 +63,8 @@ export const ApiOrder = () => {
           id={palette.palletId}
           products={palette.products.flat().filter(Boolean)}
           route={order.routes[i]}
+          isOpen={visiblePaletteId === palette.palletId}
+          handleOpen={() => setVisiblePaletteId(palette.palletId)}
         />
       ))}
       <dialog id="error_modal" className="modal">
