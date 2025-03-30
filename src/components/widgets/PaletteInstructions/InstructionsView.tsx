@@ -1,11 +1,24 @@
 import { useState } from 'react';
 
-import { ProductSchema, RouteSchema } from '@/components/widgets/PaletteInstructions/types';
+import { ProductSchema, RoutePoint, RouteSchema } from '@/components/widgets/PaletteInstructions/types';
 import { Chevron } from '@/components/ui/Chevron';
 import { WarehousePlot } from '@/components/widgets/PaletteInstructions/WarehousePlot';
 import { cleanZoneId } from '@/components/utils/cleanZoneId';
+import { ProductsView } from '@/components/widgets/ProductsView';
 
-export const InstructionsView = ({ route }: { products: ProductSchema[]; route?: RouteSchema }) => {
+const getProductsByRoutePoint = (routePoint: RoutePoint, products: ProductSchema[]) => {
+  const result: ProductSchema[] = [];
+  const articlesIds = routePoint.items.map((x) => x.articleId);
+  products.forEach((x) => {
+    if (articlesIds.includes(x.product.articleId)) {
+      result.push(x);
+    }
+  });
+
+  return result;
+};
+
+export const InstructionsView = ({ route, products }: { products: ProductSchema[]; route?: RouteSchema }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -17,27 +30,11 @@ export const InstructionsView = ({ route }: { products: ProductSchema[]; route?:
       {isOpen &&
         route?.points.map((routePoint) => (
           <div key={routePoint.zone.zoneId}>
-            <h4 className="text-l">Точка {routePoint.zone.zoneId}</h4>
+            <h4 className="text-l sticky top-18 bg-white z-9 w-full">Точка {routePoint.zone.zoneId}</h4>
             <div className="flex gap-3">
-              <WarehousePlot activeZonesIds={[cleanZoneId(routePoint.zone.zoneId)]} />
-              <div className="overflow-x-auto grow">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>артикул</th>
-                      <th>кол-во</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {routePoint.items.map((boxItem) => (
-                      <tr key={boxItem.articleId}>
-                        <td>{boxItem.articleId}</td>
-                        <td>{boxItem.quantity}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              <ProductsView products={getProductsByRoutePoint(routePoint, products)} isDetailed={false}>
+                <WarehousePlot activeZonesIds={[cleanZoneId(routePoint.zone.zoneId)]} isDetailed={false} />
+              </ProductsView>
             </div>
           </div>
         ))}

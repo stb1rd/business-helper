@@ -23,7 +23,7 @@ type RouteProductItem = {
   quantity: number;
 };
 
-type RoutePoint = {
+export type RoutePoint = {
   zone: {
     zoneId: string;
     x: number;
