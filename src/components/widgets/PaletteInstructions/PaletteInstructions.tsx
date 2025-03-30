@@ -38,7 +38,7 @@ export const PaletteInstructions = ({
             <div className="stat">
               <div className="stat-title">Всего коробок</div>
               <div className="stat-value">{products.length}</div>
-              <div className="stat-desc">{products.map((x) => x.product.articleId).join(', ')}</div>
+              <div className="stat-desc overflow-hidden overflow-ellipsis">{products.map((x) => x.product.articleId).join(', ')}</div>
             </div>
             <div className="stat">
               <div className="stat-title whitespace-pre">{`Длина перемещений оператора`}</div>
