@@ -5,7 +5,17 @@ import { Chevron } from '@/components/ui/Chevron';
 import { ProductsView } from '@/components/widgets/ProductsView';
 import { cleanZoneId } from '@/components/utils/cleanZoneId';
 
-export const PaletteView = ({ products, route }: { products: ProductSchema[]; route?: RouteSchema }) => {
+export const PaletteView = ({
+  products,
+  route,
+  completedSerialIds,
+  toggleCompletedSerialId,
+}: {
+  products: ProductSchema[];
+  route?: RouteSchema;
+  completedSerialIds: Set<string>;
+  toggleCompletedSerialId: (targetSerialId: string) => void;
+}) => {
   const [isOpen, setIsOpen] = useState(true);
 
   const productRackMap = new Map<string, string>();
@@ -21,7 +31,14 @@ export const PaletteView = ({ products, route }: { products: ProductSchema[]; ro
         <h3 className="text-xl">Выкладка на палету</h3>
         <Chevron size="btn-sm" isOpen={isOpen} />
       </div>
-      {isOpen && <ProductsView products={products} productRackMap={productRackMap} />}
+      {isOpen && (
+        <ProductsView
+          products={products}
+          productRackMap={productRackMap}
+          completedSerialIds={completedSerialIds}
+          toggleCompletedSerialId={toggleCompletedSerialId}
+        />
+      )}
     </div>
   );
 };

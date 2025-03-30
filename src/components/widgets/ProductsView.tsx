@@ -12,11 +12,15 @@ export const ProductsView = ({
   isDetailed = true,
   children,
   productRackMap,
+  completedSerialIds,
+  toggleCompletedSerialId,
 }: {
   products: ProductSchema[];
   isDetailed?: boolean;
   children?: ReactNode;
   productRackMap?: Map<string, string>;
+  completedSerialIds: Set<string>;
+  toggleCompletedSerialId: (targetSerialId: string) => void;
 }) => {
   const [visibleBoxesIds, setVisibleBoxesIds] = useState(products.map((x) => x.serialNumber));
   const visibleProducts = products.filter((x) => visibleBoxesIds.includes(x.serialNumber));
@@ -44,7 +48,7 @@ export const ProductsView = ({
     <div className="flex gap-3 w-full items-start">
       <div className="sticky top-25 flex gap-3">
         {children}
-        <PalettePlot products={visibleProducts} isDetailed={isDetailed} />
+        <PalettePlot products={visibleProducts} isDetailed={isDetailed} completedSerialIds={completedSerialIds} />
       </div>
       <div className="overflow-x-auto grow">
         <table className="table">
@@ -83,6 +87,7 @@ export const ProductsView = ({
                 </div>
               </th>
               {Boolean(productRackMap) && <th>склад</th>}
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -90,7 +95,16 @@ export const ProductsView = ({
               const coords = getProductCoords(productItem);
 
               return (
-                <tr key={`${productItem.serialNumber}-${productItem.product.articleId}`}>
+                <tr
+                  key={`${productItem.serialNumber}-${productItem.product.articleId}`}
+                  style={
+                    completedSerialIds.has(productItem.serialNumber)
+                      ? {
+                          background: 'LightGrey',
+                        }
+                      : {}
+                  }
+                >
                   <th>
                     <button className="btn btn-xs btn-circle btn-ghost" onClick={() => toggleVisibility(productItem.serialNumber)}>
                       {visibleBoxesIds.includes(productItem.serialNumber) && <EyeIcon className="size-4" />}
@@ -99,7 +113,12 @@ export const ProductsView = ({
                   </th>
                   <td
                     className="text-center"
-                    style={{ textShadow: 'white 0px 0px 5px', background: getColor(Number(productItem.serialNumber)) }}
+                    style={{
+                      textShadow: 'white 0px 0px 5px',
+                      background: completedSerialIds.has(productItem.serialNumber)
+                        ? 'LightGrey'
+                        : getColor(Number(productItem.serialNumber)),
+                    }}
                   >
                     {productItem.serialNumber}
                   </td>
@@ -108,6 +127,14 @@ export const ProductsView = ({
                   <td className="text-right">{productItem.product.weightKg}</td>
                   <td className="text-right">{productItem.product.maxLoadKg}</td>
                   {Boolean(productRackMap) && <td className="text-center">{productRackMap!.get(productItem.product.articleId)}</td>}
+                  <td>
+                    <input
+                      type="checkbox"
+                      className="checkbox checkbox-sm"
+                      checked={completedSerialIds.has(productItem.serialNumber)}
+                      onChange={() => toggleCompletedSerialId(productItem.serialNumber)}
+                    />
+                  </td>
                 </tr>
               );
             })}

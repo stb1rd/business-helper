@@ -6,7 +6,18 @@ import { PaletteView } from '@/components/widgets/PaletteInstructions/PaletteVie
 import { InstructionsView } from '@/components/widgets/PaletteInstructions/InstructionsView';
 import { cleanZoneId } from '@/components/utils/cleanZoneId';
 
-export const PaletteInstructions = ({ products, route }: { products: ProductSchema[]; route?: RouteSchema }) => {
+export const PaletteInstructions = ({
+  products,
+  route,
+  completedSerialIds,
+  toggleCompletedSerialId,
+}: {
+  products: ProductSchema[];
+  route?: RouteSchema;
+
+  completedSerialIds: Set<string>;
+  toggleCompletedSerialId: (targetSerialId: string) => void;
+}) => {
   const whZonesIds: string[] = [];
   let totalPath = 0;
   route?.points.forEach((pointItem) => {
@@ -39,8 +50,18 @@ export const PaletteInstructions = ({ products, route }: { products: ProductSche
           <PalettePlot products={products} isDetailed={false} />
         </div>
       </div>
-      <PaletteView products={products} route={route} />
-      <InstructionsView products={products} route={route} />
+      <PaletteView
+        products={products}
+        route={route}
+        completedSerialIds={completedSerialIds}
+        toggleCompletedSerialId={toggleCompletedSerialId}
+      />
+      <InstructionsView
+        products={products}
+        route={route}
+        completedSerialIds={completedSerialIds}
+        toggleCompletedSerialId={toggleCompletedSerialId}
+      />
     </div>
   );
 };

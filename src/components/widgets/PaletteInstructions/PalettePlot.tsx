@@ -14,14 +14,22 @@ const palettePlotData = {
   text: 'Палета',
 } as PlotParams['data'][number];
 
-export const PalettePlot = ({ products, isDetailed = true }: { products: ProductSchema[]; isDetailed?: boolean }) => {
+export const PalettePlot = ({
+  products,
+  isDetailed = true,
+  completedSerialIds,
+}: {
+  products: ProductSchema[];
+  isDetailed?: boolean;
+  completedSerialIds?: Set<string>;
+}) => {
   const boxesPlotData = products.map((productItem) => ({
     ...PLOT_DEFAULT_DATA,
     ...getPlotData(getProductCoords(productItem)),
     text: [`номер: ${productItem.serialNumber}`, `артикул: ${productItem.product.articleId}`, `вес: ${productItem.product.weightKg}`].join(
       '<br>'
     ),
-    color: getColor(Number(productItem.serialNumber)),
+    color: completedSerialIds?.has(productItem.serialNumber) ? 'LightGrey' : getColor(Number(productItem.serialNumber)),
   })) as PlotParams['data'];
 
   const sizeProps = isDetailed ? 'w-[500px] h-[500px]' : 'w-[350px] h-[350px]';

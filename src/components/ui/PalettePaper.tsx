@@ -7,16 +7,38 @@ import { ProductSchema, RouteSchema } from '@/components/widgets/PaletteInstruct
 export const PalettePaper = ({ products, id, route }: { products: ProductSchema[]; id: string; route: RouteSchema }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const [completedSerialIds, setCompletedSerialIds] = useState(new Set<string>());
+  const toggleCompletedSerialId = (targetSerialId: string) => {
+    if (completedSerialIds.has(targetSerialId)) {
+      completedSerialIds.delete(targetSerialId);
+    } else {
+      completedSerialIds.add(targetSerialId);
+    }
+    setCompletedSerialIds(new Set(completedSerialIds));
+  };
+
+  let title = `Палета ${id}`;
+  if (completedSerialIds.size > 0) {
+    title = `Палета ${id}, выложено ${completedSerialIds.size} из ${products.length}`;
+  }
+
   return (
     <div className="paper">
       <div
         className="flex gap-2 justify-start items-center interactive sticky top-0 bg-white z-20 w-full"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <h2 className="text-2xl">Палета {id}</h2>
+        <h2 className="text-2xl">{title}</h2>
         <Chevron isOpen={isOpen} />
       </div>
-      {isOpen && <PaletteInstructions products={products} route={route} />}
+      {isOpen && (
+        <PaletteInstructions
+          products={products}
+          route={route}
+          completedSerialIds={completedSerialIds}
+          toggleCompletedSerialId={toggleCompletedSerialId}
+        />
+      )}
     </div>
   );
 };

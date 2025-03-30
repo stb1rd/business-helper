@@ -18,7 +18,34 @@ const getProductsByRoutePoint = (routePoint: RoutePoint, products: ProductSchema
   return result;
 };
 
-export const InstructionsView = ({ route, products }: { products: ProductSchema[]; route?: RouteSchema }) => {
+const getRoutePointTitle = (routePoint: RoutePoint, products: ProductSchema[], completedSerialIds: Set<string>) => {
+  const title = `Точка ${routePoint.zone.zoneId}`;
+  const currentProducts = getProductsByRoutePoint(routePoint, products);
+  let currentSerialIdsNumber = 0;
+  currentProducts.forEach((x) => {
+    if (completedSerialIds.has(x.serialNumber)) {
+      currentSerialIdsNumber += 1;
+    }
+  });
+
+  if (currentSerialIdsNumber === 0 || currentProducts.length === 0) {
+    return title;
+  }
+
+  return `${title}, выложено ${currentSerialIdsNumber} из ${currentProducts.length}`;
+};
+
+export const InstructionsView = ({
+  route,
+  products,
+  completedSerialIds,
+  toggleCompletedSerialId,
+}: {
+  products: ProductSchema[];
+  route?: RouteSchema;
+  completedSerialIds: Set<string>;
+  toggleCompletedSerialId: (targetSerialId: string) => void;
+}) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -30,9 +57,14 @@ export const InstructionsView = ({ route, products }: { products: ProductSchema[
       {isOpen &&
         route?.points.map((routePoint) => (
           <div key={routePoint.zone.zoneId}>
-            <h4 className="text-l sticky top-18 bg-white z-9 w-full">Точка {routePoint.zone.zoneId}</h4>
+            <h4 className="text-l sticky top-18 bg-white z-9 w-full">{getRoutePointTitle(routePoint, products, completedSerialIds)}</h4>
             <div className="flex gap-3">
-              <ProductsView products={getProductsByRoutePoint(routePoint, products)} isDetailed={false}>
+              <ProductsView
+                products={getProductsByRoutePoint(routePoint, products)}
+                isDetailed={false}
+                completedSerialIds={completedSerialIds}
+                toggleCompletedSerialId={toggleCompletedSerialId}
+              >
                 <WarehousePlot activeZonesIds={[cleanZoneId(routePoint.zone.zoneId)]} isDetailed={false} />
               </ProductsView>
             </div>
