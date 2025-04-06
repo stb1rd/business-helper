@@ -65,7 +65,7 @@ export const WarehousePlot = ({ activeZonesIds, isDetailed = true }: { activeZon
     color: activeZonesIds?.includes(rackItem.title) ? 'limegreen' : 'slateblue',
   })) as PlotParams['data'];
 
-  const sizeProps = isDetailed ? 'w-full lg:w-[500px] h-[500px]' : 'w-1/2 lg:w-[360px] h-[360px]';
+  const sizeProps = isDetailed ? 'w-full xl:w-[500px] h-[500px]' : 'w-1/2 xl:w-[360px] h-[360px]';
 
   return (
     <Plot

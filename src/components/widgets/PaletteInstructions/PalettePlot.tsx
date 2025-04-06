@@ -47,7 +47,7 @@ export const PalettePlot = ({
     };
   }) as PlotParams['data'];
 
-  const sizeProps = isDetailed ? 'w-full lg:w-[500px] h-[500px]' : 'w-1/2 lg:w-[360px] h-[360px]';
+  const sizeProps = isDetailed ? 'w-full xl:w-[500px] h-[500px]' : 'w-1/2 xl:w-[360px] h-[360px]';
 
   const [cameraEyeX, setCameraEyeX] = useState(1.35);
   const [cameraEyeY, setCameraEyeY] = useState(1.35);
