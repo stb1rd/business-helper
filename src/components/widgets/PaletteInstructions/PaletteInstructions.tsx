@@ -22,7 +22,7 @@ export const PaletteInstructions = ({
   let totalPath = 0;
   route?.points.forEach((pointItem) => {
     whZonesIds.push(cleanZoneId(pointItem.zone.zoneId));
-    totalPath += pointItem.pathMeters;
+    totalPath += pointItem.pathMeters || 0;
   });
 
   return (
