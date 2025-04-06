@@ -47,7 +47,7 @@ export const PalettePlot = ({
     };
   }) as PlotParams['data'];
 
-  const sizeProps = isDetailed ? 'w-[500px] h-[500px]' : 'w-[350px] h-[350px]';
+  const sizeProps = isDetailed ? 'w-full lg:w-[500px] h-[500px]' : 'w-1/2 lg:w-[360px] h-[360px]';
 
   const [cameraEyeX, setCameraEyeX] = useState(1.35);
   const [cameraEyeY, setCameraEyeY] = useState(1.35);
@@ -72,7 +72,7 @@ export const PalettePlot = ({
           setCameraEyeZ(newCameraEyeZ);
         }
       }}
-      className={`border border-[#d7d7d7] rounded-sm box-content shrink-0 overflow-hidden ${sizeProps}`}
+      className={`border border-[#d7d7d7] rounded-sm overflow-hidden ${sizeProps}`}
       data={[palettePlotData, ...boxesPlotData]}
       layout={{
         autosize: true,

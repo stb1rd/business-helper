@@ -43,7 +43,7 @@ export const ManageWarehouse = () => {
         </div>
         {isOpen && (
           <>
-            <div className="flex gap-3 w-full">
+            <div className="flex flex-col xl:flex-row gap-3 w-full">
               <div className="flex flex-col gap-2  grow">
                 <h3 className="text-xl">Текущая</h3>
                 <div className="flex gap-2 items-start">

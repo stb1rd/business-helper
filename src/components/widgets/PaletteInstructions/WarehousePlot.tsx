@@ -65,42 +65,43 @@ export const WarehousePlot = ({ activeZonesIds, isDetailed = true }: { activeZon
     color: activeZonesIds?.includes(rackItem.title) ? 'limegreen' : 'slateblue',
   })) as PlotParams['data'];
 
-  const sizeProps = isDetailed ? 'w-[500px] h-[600px]' : 'w-[350px] h-[350px]';
+  const sizeProps = isDetailed ? 'w-full lg:w-[500px] h-[500px]' : 'w-1/2 lg:w-[360px] h-[360px]';
 
   return (
-    <div className="flex flex-col gap-2">
-      <Plot
-        className={`border border-[#d7d7d7] rounded-sm  box-content shrink-0 overflow-hidden ${sizeProps}`}
-        data={racksPlotData}
-        layout={{
-          autosize: true,
-          margin: { l: 0, r: 0, b: 0, t: 0 },
-          scene: {
-            aspectratio: { x: 0.4, y: 0.5, z: 0.02 },
-            xaxis: {
-              range: [0, warehouseSizeX],
-              tickvals: Array.from(whXTicks).map((tick) => tick[0]),
-              ticktext: Array.from(whXTicks).map((tick) => tick[1]),
-              visible: isDetailed,
-            },
-            yaxis: {
-              range: [0, warehouseSizeY],
-              tickvals: Array.from(whYTicks).map((tick) => tick[0]),
-              ticktext: Array.from(whYTicks).map((tick) => tick[1]),
-              visible: isDetailed,
-            },
-            zaxis: {
-              range: [0, 500],
-              nticks: 1,
-              visible: isDetailed,
-            },
-            camera: {
-              eye: { x: 0, y: -0.05, z: isDetailed ? 0.85 : 0.55 },
-              center: { x: 0, y: 0, z: 0 },
-            },
+    <Plot
+      className={`border border-[#d7d7d7] rounded-sm overflow-hidden ${sizeProps}`}
+      data={racksPlotData}
+      layout={{
+        autosize: true,
+        margin: { l: 0, r: 0, b: 0, t: 0 },
+        scene: {
+          aspectratio: { x: 0.4, y: 0.5, z: 0.02 },
+          xaxis: {
+            range: [0, warehouseSizeX],
+            tickvals: Array.from(whXTicks).map((tick) => tick[0]),
+            ticktext: Array.from(whXTicks).map((tick) => tick[1]),
+            visible: isDetailed,
+            title: { text: 'ширина (см)' },
           },
-        }}
-      />
-    </div>
+          yaxis: {
+            range: [0, warehouseSizeY],
+            tickvals: Array.from(whYTicks).map((tick) => tick[0]),
+            ticktext: Array.from(whYTicks).map((tick) => tick[1]),
+            visible: isDetailed,
+            title: { text: 'длина (см)' },
+          },
+          zaxis: {
+            range: [0, 500],
+            nticks: 1,
+            visible: isDetailed,
+            title: { text: '' },
+          },
+          camera: {
+            eye: { x: 0, y: -0.05, z: isDetailed ? 0.85 : 0.55 },
+            center: { x: 0, y: 0, z: 0 },
+          },
+        },
+      }}
+    />
   );
 };

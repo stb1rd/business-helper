@@ -45,8 +45,8 @@ export const ProductsView = ({
   };
 
   return (
-    <div className="flex gap-3 w-full items-start">
-      <div className="sticky top-25 flex gap-3">
+    <div className="flex gap-3 w-full items-start flex-wrap">
+      <div className="lg:sticky top-25 flex gap-3 w-full lg:w-auto">
         {children}
         <PalettePlot products={visibleProducts} isDetailed={isDetailed} completedSerialIds={completedSerialIds} />
       </div>

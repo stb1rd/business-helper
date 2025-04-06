@@ -28,8 +28,8 @@ export const PaletteInstructions = ({
   return (
     <div className="flex flex-col w-full gap-2">
       <div>
-        <div className="flex gap-2">
-          <div className="stats stats-vertical grow border border-[#d7d7d7] rounded-sm">
+        <div className="flex flex-wrap lg:flex-nowrap gap-2">
+          <div className="stats lg:stats-vertical w-full lg:grow border border-[#d7d7d7] rounded-sm">
             <div className="stat">
               <div className="stat-title">Всего точек сбора</div>
               <div className="stat-value">{whZonesIds.length}</div>
@@ -46,8 +46,10 @@ export const PaletteInstructions = ({
               <div className="stat-desc">метров</div>
             </div>
           </div>
-          <WarehousePlot activeZonesIds={whZonesIds} isDetailed={false} />
-          <PalettePlot products={products} isDetailed={false} />
+          <div className="flex w-full gap-2">
+            <WarehousePlot activeZonesIds={whZonesIds} isDetailed={false} />
+            <PalettePlot products={products} isDetailed={false} />
+          </div>
         </div>
       </div>
       <PaletteView

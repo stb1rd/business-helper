@@ -16,7 +16,7 @@ export const WarehouseMeta = () => {
   const racksCount = warehouse.zones.flatMap((x) => x).filter(Boolean).length;
 
   return (
-    <div className="stats stats-vertical grow border border-[#d7d7d7] rounded-sm">
+    <div className="stats stats-vertical grow border border-[#d7d7d7] rounded-sm shrink-0">
       <div className="stat">
         <div className="stat-title">Стеллажей</div>
         <div className="stat-value">{racksCount}</div>
@@ -24,12 +24,12 @@ export const WarehouseMeta = () => {
       <div className="stat">
         <div className="stat-title">Ширина</div>
         <div className="stat-value">{warehouseSizeX / 100}</div>
-        <div className="stat-desc">метров (ось x)</div>
+        <div className="stat-desc">метров</div>
       </div>
       <div className="stat">
         <div className="stat-title">Длина</div>
         <div className="stat-value">{warehouseSizeY / 100}</div>
-        <div className="stat-desc">метров (ось y)</div>
+        <div className="stat-desc">метров</div>
       </div>
     </div>
   );
