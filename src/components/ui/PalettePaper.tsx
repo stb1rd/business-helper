@@ -34,7 +34,7 @@ export const PalettePaper = ({
 
   return (
     <div className="paper">
-      <div className="flex gap-2 justify-start items-center interactive sticky top-0 bg-white z-20 w-full" onClick={handleOpen}>
+      <div className="flex gap-2 justify-start items-center interactive sticky top-0 bg-base-100 z-20 w-full" onClick={handleOpen}>
         <h2 className="text-2xl">{title}</h2>
         <Chevron isOpen={isOpen} />
       </div>

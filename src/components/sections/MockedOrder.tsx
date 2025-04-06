@@ -4,7 +4,7 @@ import { Chevron } from '../ui/Chevron';
 import { OrderSchema } from '../widgets/PaletteInstructions/types';
 import { PalettePaper } from '@/components/ui/PalettePaper';
 
-import * as SAMPLE_PALETTE_PRODUCTS from './order.json';
+import * as SAMPLE_PALETTE_PRODUCTS from '../mocks/order.json';
 
 export const MockedPalettes = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -62,7 +62,7 @@ export const MockedPalettes = () => {
             products={palette.products.flat().filter(Boolean)}
             route={parsedMock.routes[i]}
             isOpen={visiblePaletteId === palette.palletId}
-            handleOpen={() => setVisiblePaletteId(palette.palletId)}
+            handleOpen={() => setVisiblePaletteId(visiblePaletteId !== palette.palletId ? palette.palletId : '')}
           />
         ))}
     </>

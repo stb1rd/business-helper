@@ -42,3 +42,9 @@ export type OrderSchema = {
   pallets: PaletteSchema[];
   routes: RouteSchema[];
 };
+
+export type WarehouseSchema = {
+  xSizes: number[];
+  ySizes: number[];
+  zones: string[][];
+};

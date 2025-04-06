@@ -50,14 +50,14 @@ export const InstructionsView = ({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex gap-2 items-center interactive sticky top-10 bg-white z-10 w-full" onClick={() => setIsOpen(!isOpen)}>
+      <div className="flex gap-2 items-center interactive sticky top-10 bg-base-100 z-10 w-full" onClick={() => setIsOpen(!isOpen)}>
         <h3 className="text-xl">Шаги сборки</h3>
         <Chevron size="btn-sm" isOpen={isOpen} />
       </div>
       {isOpen &&
         route?.points.map((routePoint) => (
           <div key={routePoint.zone.zoneId}>
-            <h4 className="text-l sticky top-18 bg-white z-9 w-full">{getRoutePointTitle(routePoint, products, completedSerialIds)}</h4>
+            <h4 className="text-l sticky top-18 bg-base-100 z-9 w-full">{getRoutePointTitle(routePoint, products, completedSerialIds)}</h4>
             <div className="flex gap-3">
               <ProductsView
                 products={getProductsByRoutePoint(routePoint, products)}

@@ -2,50 +2,10 @@ import Plot, { PlotParams } from 'react-plotly.js';
 
 import { PLOT_DEFAULT_DATA, getPlotData, BoxCoords } from '@/components/widgets/PaletteInstructions/helpers';
 
-const warehouseSize = {
-  x: 360 * 4 + 120 * 7,
-  y: 360 * 4 + 80 * 17,
-  z: 500,
-};
+import { useQuery } from '@tanstack/react-query';
+import { WarehouseSchema } from '@/components/widgets/PaletteInstructions/types';
 
-const whXTicks = new Map([
-  [360, '360'],
-  [360 + 120, '120'],
-  [360 + 120 * 2, '360'],
-  [360 * 2 + 120 * 2, '360'],
-  [360 * 2 + 120 * 3, '120'],
-  [360 * 2 + 120 * 4, '360'],
-  [360 * 3 + 120 * 4, '360'],
-  [360 * 3 + 120 * 5, '120'],
-  [360 * 3 + 120 * 6, '360'],
-  [360 * 3 + 120 * 6, '360'],
-  [360 * 4 + 120 * 6, '360'],
-  [360 * 4 + 120 * 7, '120'],
-]);
-
-const whYTicks = new Map([
-  [360, '360'],
-  [360 + 80, '80'],
-  [360 + 80 * 2, '80'],
-  [360 + 80 * 3, '80'],
-  [360 + 80 * 4, '80'],
-  [360 + 80 * 5, '80'],
-  [360 + 80 * 6, '360'],
-  [360 * 2 + 80 * 6, '360'],
-  [360 * 2 + 80 * 7, '80'],
-  [360 * 2 + 80 * 8, '80'],
-  [360 * 2 + 80 * 9, '80'],
-  [360 * 2 + 80 * 10, '80'],
-  [360 * 2 + 80 * 11, '80'],
-  [360 * 2 + 80 * 12, '360'],
-  [360 * 3 + 80 * 12, '360'],
-  [360 * 3 + 80 * 13, '80'],
-  [360 * 3 + 80 * 14, '80'],
-  [360 * 3 + 80 * 15, '80'],
-  [360 * 3 + 80 * 16, '80'],
-  [360 * 3 + 80 * 17, '80'],
-  [360 * 3 + 80 * 18, '360'],
-]);
+import * as DEFAULT_WAREHOUSE from '../../mocks/warehouse.json';
 
 type RackSchema = {
   title: string;
@@ -57,24 +17,47 @@ type RackSchema = {
   sizeZ: number;
 };
 
-const RACKS_PLOT_DATA_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
-const RACKS_PLOT_DATA: RackSchema[] = [];
-
-RACKS_PLOT_DATA_LETTERS.forEach((rackSetLetter, i) => {
-  const rackCount = rackSetLetter === 'G' ? 12 : 18;
-  for (let j = 0; j < rackCount; j++) {
-    const x = 360 + i * 120 + Math.floor(i / 2) * 360;
-    const yReversed = 360 + j * 80 + Math.floor(j / 6) * 360;
-    const y = warehouseSize.y - yReversed;
-    const title = j < 9 ? `${rackSetLetter}0${j + 1}` : `${rackSetLetter}${j + 1}`;
-
-    RACKS_PLOT_DATA.push({ x, y, title, z: 0, sizeX: 120, sizeY: 80, sizeZ: 1 });
-  }
-});
-
 const getRackCoords = (rack: RackSchema): BoxCoords => [rack.x, rack.y, rack.z, rack.sizeX, rack.sizeY, rack.sizeZ];
 
+const getLabels = (apiSizes: number[]) => {
+  const min = Math.min(...apiSizes);
+  const max = Math.max(...apiSizes);
+  const labelsWithAppendix = apiSizes.slice(0, -1);
+  labelsWithAppendix.push(...(apiSizes.at(-1) === min ? [max, min] : [max, max]));
+  // @ts-expect-error replaceAll is ok
+  const labels: number[] = labelsWithAppendix.join(',').replaceAll(`${min},${max}`, `${max},${max}`).split(',').map(Number);
+  const result: [number, string][] = labels.map((label, i) => [
+    apiSizes.slice(0, i + 1).reduce((acc, curr) => acc + curr, 0),
+    String(label),
+  ]);
+
+  return new Map(result);
+};
+
 export const WarehousePlot = ({ activeZonesIds, isDetailed = true }: { activeZonesIds?: string[]; isDetailed?: boolean }) => {
+  const { data: warehouse } = useQuery({
+    queryKey: ['warehouse'],
+    initialData: DEFAULT_WAREHOUSE as WarehouseSchema,
+    enabled: false,
+    queryFn: () => DEFAULT_WAREHOUSE as WarehouseSchema,
+  });
+
+  const warehouseSizeX = warehouse.xSizes.reduce((acc, curr) => acc + curr, 0);
+  const warehouseSizeY = warehouse.ySizes.reduce((acc, curr) => acc + curr, 0);
+  const whXTicks = getLabels(warehouse.xSizes);
+  const whYTicks = getLabels(warehouse.ySizes);
+
+  const RACKS_PLOT_DATA: RackSchema[] = [];
+  warehouse.zones.forEach((zonesRow, i) => {
+    zonesRow.forEach((zoneItem, j) => {
+      if (zoneItem) {
+        const x = warehouse.xSizes.slice(0, j).reduce((acc, curr) => acc + curr, 0);
+        const y = warehouse.ySizes.slice(i + 1).reduce((acc, curr) => acc + curr, 0);
+        RACKS_PLOT_DATA.push({ x, y, title: zoneItem, z: 0, sizeX: 120, sizeY: 80, sizeZ: 1 });
+      }
+    });
+  });
+
   const racksPlotData = RACKS_PLOT_DATA.map((rackItem) => ({
     ...PLOT_DEFAULT_DATA,
     ...getPlotData(getRackCoords(rackItem)),
@@ -95,19 +78,19 @@ export const WarehousePlot = ({ activeZonesIds, isDetailed = true }: { activeZon
           scene: {
             aspectratio: { x: 0.4, y: 0.5, z: 0.02 },
             xaxis: {
-              range: [0, warehouseSize.x],
+              range: [0, warehouseSizeX],
               tickvals: Array.from(whXTicks).map((tick) => tick[0]),
               ticktext: Array.from(whXTicks).map((tick) => tick[1]),
               visible: isDetailed,
             },
             yaxis: {
-              range: [0, warehouseSize.y],
+              range: [0, warehouseSizeY],
               tickvals: Array.from(whYTicks).map((tick) => tick[0]),
               ticktext: Array.from(whYTicks).map((tick) => tick[1]),
               visible: isDetailed,
             },
             zaxis: {
-              range: [0, warehouseSize.z],
+              range: [0, 500],
               nticks: 1,
               visible: isDetailed,
             },

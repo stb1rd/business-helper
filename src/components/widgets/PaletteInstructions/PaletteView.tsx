@@ -27,7 +27,7 @@ export const PaletteView = ({
 
   return (
     <div>
-      <div className="flex gap-2 items-center interactive sticky top-10 bg-white z-10 w-full" onClick={() => setIsOpen(!isOpen)}>
+      <div className="flex gap-2 items-center interactive sticky top-10 bg-base-100 z-10 w-full" onClick={() => setIsOpen(!isOpen)}>
         <h3 className="text-xl">Выкладка на палету</h3>
         <Chevron size="btn-sm" isOpen={isOpen} />
       </div>

@@ -50,7 +50,7 @@ export const ApiOrder = () => {
           <>
             <div className="w-full flex gap-2 items-end">
               <textarea className="textarea w-full h-84" value={bodyValue} onChange={(e) => setBodyValue(e.target.value)} />
-              <button className="btn btn-primary btn-lg w-xs" onClick={() => mutate()}>
+              <button className="btn btn-primary btn-lg w-xs" disabled={isPending} onClick={() => mutate()}>
                 {isPending ? <span className="loading loading-spinner" /> : 'Создать заказ'}
               </button>
             </div>
@@ -64,7 +64,7 @@ export const ApiOrder = () => {
           products={palette.products.flat().filter(Boolean)}
           route={order.routes[i]}
           isOpen={visiblePaletteId === palette.palletId}
-          handleOpen={() => setVisiblePaletteId(palette.palletId)}
+          handleOpen={() => setVisiblePaletteId(visiblePaletteId !== palette.palletId ? palette.palletId : '')}
         />
       ))}
       <dialog id="error_modal" className="modal">
