@@ -23,14 +23,29 @@ export const PalettePlot = ({
   isDetailed?: boolean;
   completedSerialIds?: Set<string>;
 }) => {
-  const boxesPlotData = products.map((productItem) => ({
-    ...PLOT_DEFAULT_DATA,
-    ...getPlotData(getProductCoords(productItem)),
-    text: [`номер: ${productItem.serialNumber}`, `артикул: ${productItem.product.articleId}`, `вес: ${productItem.product.weightKg}`].join(
-      '<br>'
-    ),
-    color: completedSerialIds?.has(productItem.serialNumber) ? 'LightGrey' : getColor(Number(productItem.serialNumber)),
-  })) as PlotParams['data'];
+  let maxX = PALETTE_SIZE.x;
+  let maxY = PALETTE_SIZE.y;
+  let maxZ = 2400;
+
+  const boxesPlotData = products.map((productItem) => {
+    const maxCoordX = productItem.x + productItem.product.widthMm;
+    const maxCoordY = productItem.y + productItem.product.lengthMm;
+    const maxCoordZ = productItem.z + productItem.product.heightMm;
+    maxX = Math.max(maxX, maxCoordX);
+    maxY = Math.max(maxY, maxCoordY);
+    maxZ = Math.max(maxZ, maxCoordZ);
+
+    return {
+      ...PLOT_DEFAULT_DATA,
+      ...getPlotData(getProductCoords(productItem)),
+      text: [
+        `номер: ${productItem.serialNumber}`,
+        `артикул: ${productItem.product.articleId}`,
+        `вес: ${productItem.product.weightKg}`,
+      ].join('<br>'),
+      color: completedSerialIds?.has(productItem.serialNumber) ? 'LightGrey' : getColor(Number(productItem.serialNumber)),
+    };
+  }) as PlotParams['data'];
 
   const sizeProps = isDetailed ? 'w-[500px] h-[500px]' : 'w-[350px] h-[350px]';
 
@@ -66,19 +81,19 @@ export const PalettePlot = ({
           aspectratio: { x: 0.4, y: 0.64, z: 1.2 },
           xaxis: {
             nticks: 8,
-            range: [0, PALETTE_SIZE.x],
+            range: [0, maxX],
             title: { text: 'ширина (мм)' },
             visible: isDetailed,
           },
           yaxis: {
             nticks: 12,
-            range: [0, PALETTE_SIZE.y],
+            range: [0, maxY],
             title: { text: 'длина (мм)' },
             visible: isDetailed,
           },
           zaxis: {
             nticks: 10,
-            range: [-PALETTE_SIZE.z, 2400],
+            range: [-PALETTE_SIZE.z, maxZ],
             title: { text: 'высота (мм)' },
             visible: isDetailed,
           },
