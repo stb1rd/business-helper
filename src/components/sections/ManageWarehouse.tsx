@@ -38,7 +38,7 @@ export const ManageWarehouse = () => {
     <>
       <div className="paper">
         <div className="flex gap-2 justify-between items-center interactive" onClick={() => setIsOpen(!isOpen)}>
-          <h2 className="text-2xl">Схема склада</h2>
+          <h2 className="text-2xl">Обновить склад</h2>
           <Chevron isOpen={isOpen} />
         </div>
         {isOpen && (

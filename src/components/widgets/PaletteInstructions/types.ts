@@ -1,16 +1,18 @@
+type ProductBaseSchema = {
+  articleId: string;
+  widthMm: number;
+  lengthMm: number;
+  heightMm: number;
+  weightKg: number;
+  maxLoadKg: number;
+};
+
 export type ProductSchema = {
   x: number;
   y: number;
   z: number;
   serialNumber: string;
-  product: {
-    articleId: string;
-    widthMm: number;
-    lengthMm: number;
-    heightMm: number;
-    weightKg: number;
-    maxLoadKg: number;
-  };
+  product: ProductBaseSchema;
 };
 
 export type PaletteSchema = {
@@ -48,3 +50,6 @@ export type WarehouseSchema = {
   ySizes: number[];
   zones: string[][];
 };
+
+export type CatalogSchema = Record<string, { zoneId: string; quantity: number }>;
+export type ProductsSchema = Record<string, ProductBaseSchema>;

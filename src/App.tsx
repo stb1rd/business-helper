@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MockedPalettes } from '@/components/sections/MockedOrder';
 import { ApiOrder } from '@/components/sections/ApiOrder';
 import { ManageWarehouse } from '@/components/sections/ManageWarehouse';
+import { ManageProducts } from '@/components/sections/ManageProducts';
 
 const queryClient = new QueryClient();
 
@@ -15,6 +16,7 @@ function App() {
         <MockedPalettes />
         <ApiOrder />
         <ManageWarehouse />
+        <ManageProducts />
       </div>
     </QueryClientProvider>
   );
