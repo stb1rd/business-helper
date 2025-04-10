@@ -5,6 +5,7 @@ import { Chevron } from '@/components/ui/Chevron';
 import { WarehousePlot } from '@/components/widgets/PaletteInstructions/WarehousePlot';
 import { cleanZoneId } from '@/components/utils/cleanZoneId';
 import { ProductsView } from '@/components/widgets/ProductsView';
+import { spellPlurals } from '@/components/utils/spellPlurals';
 
 const getProductsByRoutePoint = (routePoint: RoutePoint, products: ProductSchema[]) => {
   const result: ProductSchema[] = [];
@@ -46,12 +47,14 @@ export const InstructionsView = ({
   completedSerialIds: Set<string>;
   toggleCompletedSerialId: (targetSerialId: string) => void;
 }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="flex flex-col gap-3">
       <div className="flex gap-2 items-center interactive sticky top-10 bg-base-100 z-10 w-full" onClick={() => setIsOpen(!isOpen)}>
-        <h3 className="text-xl">Шаги сборки</h3>
+        <h3 className="text-xl">
+          Сборка по стеллажам – всего {route?.points.length} {spellPlurals(route!.points.length, 'шаг', 'шага', 'шагов')}
+        </h3>
         <Chevron size="btn-sm" isOpen={isOpen} />
       </div>
       {isOpen &&

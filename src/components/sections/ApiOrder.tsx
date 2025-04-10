@@ -17,17 +17,14 @@ export const ApiOrder = () => {
           <h2 className="text-2xl">Паллетизация</h2>
           <Chevron isOpen={isOpen} />
         </div>
-        {isOpen && (
-          <>
-            <FileUpload label="Оптимизировать заказ" api="order/file" onSuccess={(data) => setOrder(data)} />
-          </>
-        )}
+        {isOpen && <FileUpload label="Оптимизировать заказ" api="order/file" onSuccess={(data) => setOrder(data)} />}
       </div>
       {order?.pallets.map((palette, i) => (
         <PalettePaper
           key={palette.palletId}
           id={palette.palletId}
-          products={palette.products.flat().filter(Boolean)}
+          // products={palette.products.flat().filter(Boolean)}
+          products={palette.products}
           route={order.routes[i]}
           isOpen={visiblePaletteId === palette.palletId}
           handleOpen={() => setVisiblePaletteId(visiblePaletteId !== palette.palletId ? palette.palletId : '')}

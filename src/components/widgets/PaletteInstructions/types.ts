@@ -12,6 +12,7 @@ export type ProductSchema = {
   y: number;
   z: number;
   serialNumber: string;
+  layer: number;
   product: ProductBaseSchema;
 };
 

@@ -5,6 +5,7 @@ import { WarehousePlot } from '@/components/widgets/PaletteInstructions/Warehous
 import { PaletteView } from '@/components/widgets/PaletteInstructions/PaletteView';
 import { InstructionsView } from '@/components/widgets/PaletteInstructions/InstructionsView';
 import { cleanZoneId } from '@/components/utils/cleanZoneId';
+import { LayersView } from '@/components/widgets/PaletteInstructions/LayersView';
 
 export const PaletteInstructions = ({
   products,
@@ -12,7 +13,7 @@ export const PaletteInstructions = ({
   completedSerialIds,
   toggleCompletedSerialId,
 }: {
-  products: ProductSchema[];
+  products: ProductSchema[][];
   route?: RouteSchema;
 
   completedSerialIds: Set<string>;
@@ -25,20 +26,22 @@ export const PaletteInstructions = ({
     totalPath += pointItem.pathMeters || 0;
   });
 
+  const flatProducts = products.flat().filter(Boolean);
+
   return (
-    <div className="flex flex-col w-full gap-2">
+    <div className="flex flex-col w-full gap-5">
       <div>
         <div className="flex flex-wrap xl:flex-nowrap gap-2">
           <div className="stats xl:stats-vertical w-full xl:grow border border-[#d7d7d7] rounded-sm">
             <div className="stat">
               <div className="stat-title">Всего точек сбора</div>
               <div className="stat-value">{whZonesIds.length}</div>
-              <div className="stat-desc">{whZonesIds.join(', ')}</div>
+              <div className="stat-desc overflow-hidden overflow-ellipsis">{whZonesIds.join(', ')}</div>
             </div>
             <div className="stat">
               <div className="stat-title">Всего коробок</div>
-              <div className="stat-value">{products.length}</div>
-              <div className="stat-desc overflow-hidden overflow-ellipsis">{products.map((x) => x.product.articleId).join(', ')}</div>
+              <div className="stat-value">{flatProducts.length}</div>
+              <div className="stat-desc overflow-hidden overflow-ellipsis">{flatProducts.map((x) => x.product.articleId).join(', ')}</div>
             </div>
             <div className="stat">
               <div className="stat-title whitespace-pre">{`Длина перемещений оператора`}</div>
@@ -48,18 +51,24 @@ export const PaletteInstructions = ({
           </div>
           <div className="flex w-full gap-2">
             <WarehousePlot activeZonesIds={whZonesIds} isDetailed={false} />
-            <PalettePlot products={products} isDetailed={false} />
+            <PalettePlot products={flatProducts} isDetailed={false} />
           </div>
         </div>
       </div>
       <PaletteView
+        products={flatProducts}
+        route={route}
+        completedSerialIds={completedSerialIds}
+        toggleCompletedSerialId={toggleCompletedSerialId}
+      />
+      <LayersView
         products={products}
         route={route}
         completedSerialIds={completedSerialIds}
         toggleCompletedSerialId={toggleCompletedSerialId}
       />
       <InstructionsView
-        products={products}
+        products={flatProducts}
         route={route}
         completedSerialIds={completedSerialIds}
         toggleCompletedSerialId={toggleCompletedSerialId}

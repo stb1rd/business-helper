@@ -11,7 +11,7 @@ export const PalettePaper = ({
   isOpen,
   handleOpen,
 }: {
-  products: ProductSchema[];
+  products: ProductSchema[][];
   id: string;
   route: RouteSchema;
   isOpen: boolean;

@@ -9,6 +9,7 @@ import { ProductSchema } from '@/components/widgets/PaletteInstructions/types';
 
 export const ProductsView = ({
   products,
+  prevProducts,
   isDetailed = true,
   children,
   productRackMap,
@@ -16,6 +17,7 @@ export const ProductsView = ({
   toggleCompletedSerialId,
 }: {
   products: ProductSchema[];
+  prevProducts?: ProductSchema[];
   isDetailed?: boolean;
   children?: ReactNode;
   productRackMap?: Map<string, string>;
@@ -48,9 +50,14 @@ export const ProductsView = ({
     <div className="flex gap-3 w-full items-start flex-wrap">
       <div className="xl:sticky top-25 flex gap-3 w-full xl:w-auto">
         {children}
-        <PalettePlot products={visibleProducts} isDetailed={isDetailed} completedSerialIds={completedSerialIds} />
+        <PalettePlot
+          products={visibleProducts}
+          prevProducts={prevProducts}
+          isDetailed={isDetailed}
+          completedSerialIds={completedSerialIds}
+        />
       </div>
-      <div className="overflow-x-auto grow">
+      <div className="grow">
         <table className="table">
           <thead>
             <tr>

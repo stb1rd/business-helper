@@ -16,16 +16,38 @@ const palettePlotData = {
 
 export const PalettePlot = ({
   products,
+  prevProducts = [],
   isDetailed = true,
   completedSerialIds,
 }: {
   products: ProductSchema[];
+  prevProducts?: ProductSchema[];
   isDetailed?: boolean;
   completedSerialIds?: Set<string>;
 }) => {
   let maxX = PALETTE_SIZE.x;
   let maxY = PALETTE_SIZE.y;
   let maxZ = 2400;
+
+  const prevBoxesPlotData = prevProducts.map((productItem) => {
+    const maxCoordX = productItem.x + productItem.product.widthMm;
+    const maxCoordY = productItem.y + productItem.product.lengthMm;
+    const maxCoordZ = productItem.z + productItem.product.heightMm;
+    maxX = Math.max(maxX, maxCoordX);
+    maxY = Math.max(maxY, maxCoordY);
+    maxZ = Math.max(maxZ, maxCoordZ);
+
+    return {
+      ...PLOT_DEFAULT_DATA,
+      ...getPlotData(getProductCoords(productItem)),
+      text: [
+        `номер: ${productItem.serialNumber}`,
+        `артикул: ${productItem.product.articleId}`,
+        `вес: ${productItem.product.weightKg}`,
+      ].join('<br>'),
+      color: 'DarkGray',
+    };
+  }) as PlotParams['data'];
 
   const boxesPlotData = products.map((productItem) => {
     const maxCoordX = productItem.x + productItem.product.widthMm;
@@ -73,7 +95,7 @@ export const PalettePlot = ({
         }
       }}
       className={`border border-[#d7d7d7] rounded-sm overflow-hidden ${sizeProps}`}
-      data={[palettePlotData, ...boxesPlotData]}
+      data={[palettePlotData, ...prevBoxesPlotData, ...boxesPlotData]}
       layout={{
         autosize: true,
         margin: { l: 0, r: 0, b: 0, t: 0 },
