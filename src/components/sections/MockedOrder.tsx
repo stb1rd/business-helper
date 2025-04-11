@@ -64,7 +64,6 @@ export const MockedPalettes = () => {
           <PalettePaper
             key={palette.palletId}
             id={palette.palletId}
-            // products={palette.products.flat().filter(Boolean)}
             products={palette.products}
             route={parsedMock.routes[i]}
             isOpen={visiblePaletteId === palette.palletId}

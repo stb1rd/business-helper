@@ -6,6 +6,7 @@ import { PLOT_DEFAULT_DATA, getPlotData, PALETTE_SIZE, getProductCoords } from '
 import { ProductSchema } from '@/components/widgets/PaletteInstructions/types';
 import { getColor } from '@/components/utils/getColor';
 import { Camera } from 'plotly.js';
+import { debounce } from '@/components/utils/debounce';
 
 const palettePlotData = {
   ...PLOT_DEFAULT_DATA,
@@ -75,25 +76,28 @@ export const PalettePlot = ({
   const [cameraEyeY, setCameraEyeY] = useState(1.35);
   const [cameraEyeZ, setCameraEyeZ] = useState(0.1);
 
+  const handleRelayout = (e) => {
+    // @ts-expect-error y tho
+    const { eye } = (e['scene.camera'] as Camera) || {};
+    const newCameraEyeX = eye?.x;
+    const newCameraEyeY = eye?.y;
+    const newCameraEyeZ = eye?.z;
+
+    if (newCameraEyeX) {
+      setCameraEyeX(newCameraEyeX);
+    }
+    if (newCameraEyeY) {
+      setCameraEyeY(newCameraEyeY);
+    }
+    if (newCameraEyeZ) {
+      setCameraEyeZ(newCameraEyeZ);
+    }
+  };
+  // const handleDebouncedRelayout = debounce(handleRelayout, 100);
+
   return (
     <Plot
-      onRelayout={(e) => {
-        // @ts-expect-error y tho
-        const { eye } = (e['scene.camera'] as Camera) || {};
-        const newCameraEyeX = eye?.x;
-        const newCameraEyeY = eye?.y;
-        const newCameraEyeZ = eye?.z;
-
-        if (newCameraEyeX) {
-          setCameraEyeX(newCameraEyeX);
-        }
-        if (newCameraEyeY) {
-          setCameraEyeY(newCameraEyeY);
-        }
-        if (newCameraEyeZ) {
-          setCameraEyeZ(newCameraEyeZ);
-        }
-      }}
+      onRelayout={handleRelayout}
       className={`border border-[#d7d7d7] rounded-sm overflow-hidden ${sizeProps}`}
       data={[palettePlotData, ...prevBoxesPlotData, ...boxesPlotData]}
       layout={{

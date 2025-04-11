@@ -67,6 +67,29 @@ export const WarehousePlot = ({ activeZonesIds, isDetailed = true }: { activeZon
 
   const sizeProps = isDetailed ? 'w-full xl:w-[500px] h-[500px]' : 'w-1/2 xl:w-[360px] h-[360px]';
 
+  if (!isDetailed) {
+    return (
+      <svg
+        className={`border border-[#d7d7d7] rounded-sm overflow-hidden ${sizeProps}`}
+        viewBox={`0 0 ${warehouseSizeX} ${warehouseSizeY}`}
+      >
+        {RACKS_PLOT_DATA.map((rackItem) => (
+          <g key={rackItem.title}>
+            {!activeZonesIds?.includes(rackItem.title) && <title>{rackItem.title}</title>}
+            {activeZonesIds?.includes(rackItem.title) && <title>{rackItem.title} – пункт сбора</title>}
+            <rect
+              x={rackItem.x}
+              y={warehouseSizeY - rackItem.y}
+              width={rackItem.sizeX}
+              height={rackItem.sizeY}
+              fill={activeZonesIds?.includes(rackItem.title) ? 'limegreen' : 'slateblue'}
+            />
+          </g>
+        ))}
+      </svg>
+    );
+  }
+
   return (
     <Plot
       className={`border border-[#d7d7d7] rounded-sm overflow-hidden ${sizeProps}`}
