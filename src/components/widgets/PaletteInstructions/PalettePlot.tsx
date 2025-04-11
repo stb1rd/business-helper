@@ -6,7 +6,6 @@ import { PLOT_DEFAULT_DATA, getPlotData, PALETTE_SIZE, getProductCoords } from '
 import { ProductSchema } from '@/components/widgets/PaletteInstructions/types';
 import { getColor } from '@/components/utils/getColor';
 import { Camera } from 'plotly.js';
-import { debounce } from '@/components/utils/debounce';
 
 const palettePlotData = {
   ...PLOT_DEFAULT_DATA,
@@ -76,7 +75,7 @@ export const PalettePlot = ({
   const [cameraEyeY, setCameraEyeY] = useState(1.35);
   const [cameraEyeZ, setCameraEyeZ] = useState(0.1);
 
-  const handleRelayout = (e) => {
+  const handleRelayout = (e: Plotly.PlotRelayoutEvent) => {
     // @ts-expect-error y tho
     const { eye } = (e['scene.camera'] as Camera) || {};
     const newCameraEyeX = eye?.x;
