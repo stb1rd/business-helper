@@ -15,6 +15,7 @@ export const ProductsView = ({
   productRackMap,
   completedSerialIds,
   toggleCompletedSerialId,
+  isSvg,
 }: {
   products: ProductSchema[];
   prevProducts?: ProductSchema[];
@@ -23,6 +24,7 @@ export const ProductsView = ({
   productRackMap?: Map<string, string>;
   completedSerialIds: Set<string>;
   toggleCompletedSerialId: (targetSerialId: string) => void;
+  isSvg?: boolean;
 }) => {
   const [visibleBoxesIds, setVisibleBoxesIds] = useState(products.map((x) => x.serialNumber));
   const visibleProducts = products.filter((x) => visibleBoxesIds.includes(x.serialNumber));
@@ -55,6 +57,7 @@ export const ProductsView = ({
           prevProducts={prevProducts}
           isDetailed={isDetailed}
           completedSerialIds={completedSerialIds}
+          has2dMode={isSvg}
         />
       </div>
       <div className="grow">

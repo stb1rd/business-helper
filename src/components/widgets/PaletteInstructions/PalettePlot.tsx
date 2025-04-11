@@ -19,11 +19,13 @@ export const PalettePlot = ({
   prevProducts = [],
   isDetailed = true,
   completedSerialIds,
+  has2dMode,
 }: {
   products: ProductSchema[];
   prevProducts?: ProductSchema[];
   isDetailed?: boolean;
   completedSerialIds?: Set<string>;
+  has2dMode?: boolean;
 }) => {
   let maxX = PALETTE_SIZE.x;
   let maxY = PALETTE_SIZE.y;
@@ -92,41 +94,101 @@ export const PalettePlot = ({
       setCameraEyeZ(newCameraEyeZ);
     }
   };
-  // const handleDebouncedRelayout = debounce(handleRelayout, 100);
+
+  const [is2dMode, setIs2dMode] = useState(has2dMode);
+
+  if (is2dMode) {
+    return (
+      <div className="flex flex-col gap-2 items-end">
+        <svg className={`border border-[#d7d7d7] rounded-sm overflow-hidden ${sizeProps}`} viewBox={`0 0 ${maxX} ${maxY}`}>
+          <g>
+            <title>Палета</title>
+            <rect x={0} y={0} width={PALETTE_SIZE.x} height={PALETTE_SIZE.y} fill="khaki" />
+          </g>
+          {products.map((productItem) => (
+            <g key={productItem.serialNumber}>
+              <title>
+                №{productItem.serialNumber}, артикул: {productItem.product.articleId}
+              </title>
+              <rect
+                x={maxX - productItem.x - productItem.product.widthMm}
+                y={productItem.y}
+                width={productItem.product.widthMm}
+                height={productItem.product.lengthMm}
+                fill={getColor(Number(productItem.serialNumber))}
+              />
+            </g>
+          ))}
+        </svg>
+        {has2dMode && (
+          <label className="toggle text-base-content">
+            <input type="checkbox" checked={!is2dMode} onClick={() => setIs2dMode(!is2dMode)} />
+            <svg aria-label="enabled" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <text stroke="white" x={2} y={18}>
+                2D
+              </text>
+            </svg>
+            <svg aria-label="disabled" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <text stroke="white" x={2} y={18}>
+                3D
+              </text>
+            </svg>
+          </label>
+        )}
+      </div>
+    );
+  }
 
   return (
-    <Plot
-      onRelayout={handleRelayout}
-      className={`border border-[#d7d7d7] rounded-sm overflow-hidden ${sizeProps}`}
-      data={[palettePlotData, ...prevBoxesPlotData, ...boxesPlotData]}
-      layout={{
-        autosize: true,
-        margin: { l: 0, r: 0, b: 0, t: 0 },
-        scene: {
-          aspectratio: { x: 0.4, y: 0.64, z: 1.2 },
-          xaxis: {
-            nticks: 8,
-            range: [0, maxX],
-            title: { text: 'ширина (мм)' },
-            visible: isDetailed,
+    <div className="flex flex-col gap-2 items-end">
+      <Plot
+        onRelayout={handleRelayout}
+        className={`border border-[#d7d7d7] rounded-sm overflow-hidden ${sizeProps}`}
+        data={[palettePlotData, ...prevBoxesPlotData, ...boxesPlotData]}
+        layout={{
+          autosize: true,
+          margin: { l: 0, r: 0, b: 0, t: 0 },
+          scene: {
+            aspectratio: { x: 0.4, y: 0.64, z: 1.2 },
+            xaxis: {
+              nticks: 8,
+              range: [0, maxX],
+              title: { text: 'ширина (мм)' },
+              visible: isDetailed,
+            },
+            yaxis: {
+              nticks: 12,
+              range: [0, maxY],
+              title: { text: 'длина (мм)' },
+              visible: isDetailed,
+            },
+            zaxis: {
+              nticks: 10,
+              range: [-PALETTE_SIZE.z, maxZ],
+              title: { text: 'высота (мм)' },
+              visible: isDetailed,
+            },
+            camera: {
+              eye: { x: cameraEyeX, y: cameraEyeY, z: cameraEyeZ },
+            },
           },
-          yaxis: {
-            nticks: 12,
-            range: [0, maxY],
-            title: { text: 'длина (мм)' },
-            visible: isDetailed,
-          },
-          zaxis: {
-            nticks: 10,
-            range: [-PALETTE_SIZE.z, maxZ],
-            title: { text: 'высота (мм)' },
-            visible: isDetailed,
-          },
-          camera: {
-            eye: { x: cameraEyeX, y: cameraEyeY, z: cameraEyeZ },
-          },
-        },
-      }}
-    />
+        }}
+      />
+      {has2dMode && (
+        <label className="toggle text-base-content">
+          <input type="checkbox" checked={!is2dMode} onClick={() => setIs2dMode(!is2dMode)} />
+          <svg aria-label="enabled" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <text stroke="white" x={2} y={18}>
+              2D
+            </text>
+          </svg>
+          <svg aria-label="disabled" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <text stroke="white" x={2} y={18}>
+              3D
+            </text>
+          </svg>
+        </label>
+      )}
+    </div>
   );
 };

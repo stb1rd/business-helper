@@ -68,6 +68,7 @@ export const LayersView = ({
                 isDetailed={false}
                 completedSerialIds={completedSerialIds}
                 toggleCompletedSerialId={toggleCompletedSerialId}
+                isSvg
               >
                 <WarehousePlot activeZonesIds={getRoutesByProductsLayer(route!, productsLayer)} isDetailed={false} />
               </ProductsView>
