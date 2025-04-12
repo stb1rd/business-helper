@@ -5,7 +5,7 @@ import { OrderSchema } from '@/components/widgets/PaletteInstructions/types';
 import { PalettePaper } from '@/components/ui/PalettePaper';
 import { FileUpload } from '@/components/widgets/PaletteInstructions/FileUpload';
 
-export const ApiOrder = () => {
+export const FileApiOrder = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [visiblePaletteId, setVisiblePaletteId] = useState<string>();
   const [order, setOrder] = useState<null | OrderSchema>(null);

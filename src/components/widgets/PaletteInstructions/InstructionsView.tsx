@@ -69,6 +69,7 @@ export const InstructionsView = ({
                 isDetailed={false}
                 completedSerialIds={completedSerialIds}
                 toggleCompletedSerialId={toggleCompletedSerialId}
+                isSvg
               >
                 <WarehousePlot activeZonesIds={[cleanZoneId(routePoint.zone.zoneId)]} isDetailed={false} />
               </ProductsView>
