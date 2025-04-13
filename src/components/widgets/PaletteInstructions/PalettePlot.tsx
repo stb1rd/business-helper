@@ -71,7 +71,8 @@ export const PalettePlot = ({
     };
   }) as PlotParams['data'];
 
-  const sizeProps = isDetailed ? 'w-full xl:w-[500px] h-[500px]' : 'w-1/2 xl:w-[360px] h-[360px]';
+  const widthProps = isDetailed ? 'w-full xl:w-[500px]' : 'w-1/2 xl:w-[360px]';
+  const heightProps = isDetailed ? 'h-[500px]' : 'h-[360px]';
 
   const [cameraEyeX, setCameraEyeX] = useState(1.35);
   const [cameraEyeY, setCameraEyeY] = useState(1.35);
@@ -99,8 +100,8 @@ export const PalettePlot = ({
 
   if (is2dMode) {
     return (
-      <div className="flex flex-col gap-2 items-end">
-        <svg className={`border border-[#d7d7d7] rounded-sm overflow-hidden ${sizeProps}`} viewBox={`0 0 ${maxX} ${maxY}`}>
+      <div className={`flex flex-col gap-2 items-end ${widthProps}`}>
+        <svg className={`border border-[#d7d7d7] rounded-sm overflow-hidden w-full ${heightProps}`} viewBox={`0 0 ${maxX} ${maxY}`}>
           <g>
             <title>Палета</title>
             <rect x={0} y={0} width={PALETTE_SIZE.x} height={PALETTE_SIZE.y} fill="khaki" />
@@ -140,10 +141,10 @@ export const PalettePlot = ({
   }
 
   return (
-    <div className="flex flex-col gap-2 items-end">
+    <div className={`flex flex-col gap-2 items-end ${widthProps}`}>
       <Plot
         onRelayout={handleRelayout}
-        className={`border border-[#d7d7d7] rounded-sm overflow-hidden ${sizeProps}`}
+        className={`border border-[#d7d7d7] rounded-sm overflow-hidden w-full ${heightProps}`}
         data={[palettePlotData, ...prevBoxesPlotData, ...boxesPlotData]}
         layout={{
           autosize: true,
